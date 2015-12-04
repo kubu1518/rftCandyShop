@@ -14,47 +14,48 @@
  */
 
 
-class Cart {
+class Cart
+{
 
     private $items;
     private $quantity;
-    private $databaseHandler;
+    private $conn;
     private $AFA;
 
-    function __construct() {
+    function __construct()
+    {
         $this->items = array();
         $this->quantity = array();
         $this->AFA = 1.27;
+        $this->conn = new ConnectionHandler();
     }
 
-    function getItems() {
+    function getItems()
+    {
         return $this->items;
     }
 
-    function getQuantity() {
+    function getQuantity()
+    {
         return $this->quantity;
     }
 
-    function setItems($items) {
+    function setItems($items)
+    {
         $this->items = $items;
     }
 
-    function setQuantity($quantity) {
+    function setQuantity($quantity)
+    {
         $this->quantity = $quantity;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $result = "";
-        /* foreach ($this->items as $key => $value) {
-          $result.=$key . " " . $value;
-          } */
-        /*
-          for ($i = 0; $i < count($this->items); $i++) {
-          $result.= $this->items[$i] . " => " . $this->quantity[$i] . " db.<br>";
-          } */
 
         foreach ($this->items as $key => $value) {
-            $result.= $this->items[$key] . " => " . $this->quantity[$key] . " db.<br>";
+            $result .= $this->items[$key] . " => " . $this->quantity[$key] . " db.<br>";
         }
 
         return $result;
@@ -62,12 +63,12 @@ class Cart {
 
     /**
      * A kosárhoz hozzá adja a terméket hozzá tartozó mennyiséggel együtt.
-     * 
+     *
      * @param Product $product
      * @param int $quantity
      */
-    public function addProduct($product, $quantity) {
-        //$this->items[(String)$item] = $quantity; ez mükszik
+    public function addProduct($product, $quantity)
+    {
 
         array_push($this->items, $product);
 
@@ -78,78 +79,71 @@ class Cart {
 
     /**
      * Módosítja a kosárban lévő termékhez a kívánt mennyiséget.
-     * 
+     *
      * @param Product $product
      * @param int $quantity
      */
-    public function modifyProductQuantity($product, $quantity) {
-        //$res = "";
+    public function modifyProductQuantity($product, $quantity)
+    {
         $index = array_search($product, $this->items);
-        /*
-          echo "index: " . $index . "<br>";
-          $res .="From: " . (String) $index;
-          $res .=" ".(String)  $this->quantity[$index];
-
-          foreach ($this->items as $key => $value) {
-          $result.= $this->items[$key] . " => " . $this->quantity[$key] . " db.<br>";
-          }
-
-          echo "<br>";
-         */
         $this->quantity[$index] = $quantity;
 
-//$res .= " to->" . (String) $this->quantity[$index];
-        //return $res;
     }
 
     /**
      * Törli a kosárból a terméket és a hozzárendelt mennyiséget.
-     * 
+     *
      * @param Product $product
      */
-    public function removeProduct($product) {
+    public function removeProduct($product)
+    {
         $index = array_search($product, $this->items);
+        if ($index !== FAlSE) {
 
-        //echo "index: " . $index . "<br>";
-        unset($this->quantity[$index]);
-        unset($this->items[$index]);
+            unset($this->quantity[$index]);
+            unset($this->items[$index]);
+        } else {
+            throw new Exception("Nincs ilyen termék a kosárban!");
+        }
     }
 
     /**
      * Kiírja listázva a kosárban lévő tételeket, és a mennyiség függvényében az árat hozzá.
-     * 
+     *
      * @return String htmlOutput
      */
-    public function watchCart() {
+    public function watchCart()
+    {
 
         $result = "<div id='cart'>Cart<br>";
         foreach ($this->items as $key => $value) {
             //div id = termék id;
             $result .= "<div id='" . $value->getId() . "' class='basket_product'>"
-                    . "<img src='" . $value->getImg() . "' title='" . $value->getImg() . "' height=40 width=40> "
-                    . $value->getName() . " <input type='number' name='" . $value->getId()
-                    . "' min='" . $value->getMinOrder() . "' max='100' value='" . $this->quantity[$key] . "'> db"
-                    . "<input type='button' onclick='alert(" . $value->getId() . ")' value='Törlés'> Ár: "
-                    . $this->itemSub($key) . " Ft.";
+                . "<img src='" . $value->getImg() . "' title='" . $value->getImg() . "' height=40 width=40> "
+                . $value->getName() . " <input type='number' name='" . $value->getId()
+                . "' min='" . $value->getMinOrder() . "' max='100' value='" . $this->quantity[$key] . "'> db"
+                . "<input type='button' onclick='alert(" . $value->getId() . ")' value='Törlés'> Ár: "
+                . $this->itemSub($key) . " Ft.";
 
 
-            $result .="</div>";
+            $result .= "</div>";
         }
         $result .= "Összeg: " . $this->cartSubTotal() . " Ft.";
-        $result.="</div>";
+        $result .= "</div>";
 
         echo $result;
     }
 
     /**
-     * Megadott termék név alapján keres terméket a kosárban, ha van, akkor visszatér 
+     * Megadott termék név alapján keres terméket a kosárban, ha van, akkor visszatér
      * Termék objektummal.
-     * 
+     *
      * @param String $name
      * @return Product $product
      * @return NULL
      */
-    public function getProductByName($name) {
+    public function getProductByName($name)
+    {
         foreach ($this->items as $item) {
             if ($item->getName() === $name) {
                 return $item;
@@ -161,12 +155,13 @@ class Cart {
 
     /**
      * Megállapítja, hogy a kosárban lévő tételek mennyibe fognak kerülni összesen.
-     * 
+     *
      * @return int $amount
      */
-    public function cartSubTotal() {
+    public function cartSubTotal()
+    {
         $result = 0;
-       
+
         foreach ($this->items as $key => $value) {
             $result += $this->quantity[$key] * $this->items[$key]->getPrice();
         }
@@ -175,13 +170,28 @@ class Cart {
 
     /**
      * Kiszámítja, hogy adott tételnek mennyi az ára.
-     * 
+     *
      * @param int $index
      * @return int $amount
      */
-    public function itemSub($index) {
+    public function itemSub($index)
+    {
 
         return $this->quantity[$index] * $this->items[$index]->getPrice();
+    }
+
+    /**
+     * Megkeresi az Objektum kulcs értékét/index-ét a tömbben.
+     *
+     * @param $product
+     * @return int $index
+     */
+    public function  indexOfProduct($product){
+        return array_search($product, $this->items);
+    }
+
+    public function valueOfQuantity($product){
+        return $this->quantity[$this->indexOfProduct($product)];
     }
 
 }

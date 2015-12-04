@@ -76,5 +76,4 @@ class User
         return "User: " . $this->getId() . " " . $this->getEmail() . " " . $this->getPassword();
     }
 
-
 }

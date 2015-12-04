@@ -1,12 +1,12 @@
 <?php
- $host = "localhost";
- $dbname = "laravel";
- $usname = "root";
- $pass = "";
- 
- 
- define("DB_HOST", "127.0.0.1");
- define("DB_NAME","laravel");
- define("DB_USER", "root");
- define("DB_PASS", "");
- ?>
+$host = "localhost";
+$dbname = "bmmdb";
+$usname = "root";
+$pass = "";
+
+
+define("DB_HOST", "127.0.0.1");
+define("DB_NAME","candyshopdb");
+define("DB_USER", "root");
+define("DB_PASS", "");
+?>

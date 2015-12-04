@@ -8,6 +8,7 @@
  */
 class Order
 {
+
     private $orderDate;
     private $deliveryAddress;
     private $billAddress;
@@ -29,7 +30,6 @@ class Order
      */
     public function __construct( $orderDate, $deliveryAddress, $billAddress, $status, $quantities, $products, $amount)
     {
-        $this->id = $id;
         $this->orderDate = $orderDate;
         $this->deliveryAddress = $deliveryAddress;
         $this->billAddress = $billAddress;

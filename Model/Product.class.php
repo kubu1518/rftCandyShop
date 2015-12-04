@@ -270,11 +270,9 @@ class Product
         foreach ($arr as $titleData) {
             echo $titleData['name'];
         }
-        $package_id = $conn->preparedQuery("SELECT kisz_azon FROM Kiszereles WHERE kisz_nev=?", arra($this->getPackage()));
-        $highlight_id = $conn->preparedQuery("SELECT kim_azon FROM Kiszereles WHERE kim_nev=?", arra($this->getHighlight()));
 
-        $values = array($this->getName(), $category_id, $package_id, $this->getWeight(), $this->getPrice(), $this->getMinStock(),
-            $this->getMinOrder(), $highlight_id, $this->getDiscount(), $this->getDescription(), $this->getImg()
+        $values = array($this->getName(), $this->getCategory()->getId(),$this->getCategory()->getId(), $this->getWeight(), $this->getPrice(), $this->getMinStock(),
+            $this->getMinOrder(), $this->getHighlight()->getId(), $this->getDiscount(), $this->getDescription(), $this->getImg()
         );
 
         $conn->preparedInsert($table, $fields, $values);

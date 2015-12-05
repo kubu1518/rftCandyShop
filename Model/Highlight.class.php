@@ -17,10 +17,15 @@ class Highlight
      * @param $id
      * @param $name
      */
-    public function __construct($id=NULL, $name=NULL)
+    public function __construct($id, $name=NULL)
     {
         $this->id = $id;
-        $this->name = $name;
+        if($name !== NULL) {
+            $this->name = $name;
+        }
+        else {
+            $this->name = $this->selectName($id);
+        }
     }
 
     /**
@@ -70,7 +75,7 @@ class Highlight
     public function selectName($id){
         $conn = new ConnectionHandler();
         $stmt = $conn->preparedQuery("SELECT kim_nev FROM Kiemeles WHERE kim_azon=?",array($id));
-        $row = mysqli_fetch_array($stmt,MYSQLI_BOTH);
+        $row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_FIRST);
 
         return $row[1];
     }

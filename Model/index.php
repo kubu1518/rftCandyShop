@@ -71,7 +71,7 @@ echo $c->cartSubTotal() . " Ft<br>";
 echo "##############################################<br>";
 $c->watchCart();
 
-echo "---------------SQL------------------------<br";
+echo "---------------SQL------------------------<br>";
 /**
  * Created by PhpStorm.
  * User: ngg
@@ -107,21 +107,37 @@ echo "db: ".mysqli_num_rows($stmt)."<br>";
 
     }
 */
-/*
+
 $conn = new ConnectionHandler();
-$table = "usert";
-$stmt = $conn->preparedQuery('SELECT * FROM usert where namef=?', array("user2"));
+
+
+$stmt = $conn->preparedQuery('SELECT * FROM usert');// where namef=?', array("user2"));
 if (!$stmt) {
 printf("Error: %s\n", mysqli_error($conn));
 exit();
 }
 
-while($row = mysqli_fetch_assoc($stmt,MYSQLI_BOTH)){
-echo  $row["id"]." ".$row["name"]." ".$row["pass"]."<br>";
+$v = array();
+while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+echo  $row[0]." ".$row[1]." ".$row[2]."<br>";
+    $t = $row[0]." ".$row[1]." ".$row[2];
+    array_push($v,$t);
+
 }
 
+foreach($v as $value){
+  echo $value."<br>";
+}
+
+//$row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
+//echo "user: ". $row[2]."<br>";
+
+//$count = $stmt->fetch(PDO::FETCH_NUM);
+$stmt2 = $conn->preparedCountQuery('SELECT count(*) FROM usert WHERE pass= ?',array("dslfkdfhfk"));
+echo "db: ". $stmt2."<br>";
+
 //echo "id: ".$result."<br>";
-*/
+
 ?>
 </body>
 </html>

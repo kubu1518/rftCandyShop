@@ -10,6 +10,7 @@ class UserAsCustomer extends User
 {
     private $cart;
     private $orders;
+    private $actual_order;
     private $conn;
 
     /**
@@ -21,6 +22,8 @@ class UserAsCustomer extends User
         $this->conn = new ConnectionHandler();
         $this->cart = new Cart();
         $this->orders = new Order();
+
+        $this->cart = $this->loadCart();
 
     }
 
@@ -43,6 +46,23 @@ class UserAsCustomer extends User
     /**
      * @return mixed
      */
+    public function getActualOrder()
+    {
+        return $this->actual_order;
+    }
+
+    /**
+     * @param mixed $actual_order
+     */
+    public function setActualOrder($actual_order)
+    {
+        $this->actual_order = $actual_order;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getOrders()
     {
         return $this->orders;
@@ -56,16 +76,19 @@ class UserAsCustomer extends User
         $this->orders = $orders;
     }
 
-    public function orderStart($delivery_address, $bill_address, $products, $quantities, $amount)
+    /**
+     * A Rendelés megkezdését végzi el, begyűjti a szállítási adatokat, termékeket, mennyiségeket, összeget.
+     * @param $delivery_address
+     * @param $bill_address
+     * @param $products
+     * @param $quantities
+     * @param $amount
+     */
+    public function orderStart($delivery_address, $bill_address)
     {//void
 
-        $order = new Order(new Date("Y-m-d"), $delivery_address, $bill_address, StatusEnum::OSSZE_ALLITAS_ALATT,
-            $products,$quantities,$amount);
-
-
-
-
-
+        $this->setActualOrder(new Order(new Date("Y-m-d"), $delivery_address, $bill_address, StatusEnum::OSSZE_ALLITAS_ALATT,
+            $this->getCart()->getItems(), $this->getCart()->getQuantity, $this->getCart()->cartSubTotal()));
     }
 
     public function orderFinalize()
@@ -91,18 +114,19 @@ class UserAsCustomer extends User
             $quantity = $this->cart->valueOfQuantity($value->getName());
 
             //ami benne van, arra mindre megy az update.
-            $count = mysqli_num_rows(
-                $this->conn->preparedQuery("SELECT * FROM Kosar WHERE u_id=? AND termek_id=?",
-                    array($this->getId(), $value->getId()))
+            $count = (
+            $this->conn->preparedCountQuery("SELECT count(*) FROM Kosar WHERE u_id=? AND termek_id=?",
+                array($this->getId(), $value->getId()))
             );
-            if ($count === 1) {
-                //amelek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
-                $stmt = $this->conn->preparedUpdate("Kosar",array("mennyiseg"),array($quantity),
-                    array("u_id","termek_id"),array($this->getId(),$value->getId()));
 
-            } else{
+            if ($count === 1) {
+                //amelyek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
+                $stmt = $this->conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
+                    array("u_id", "termek_id"), array($this->getId(), $value->getId()));
+
+            } else {
 //amelek eddig nem voltak a Kosar táblában beszúrásra kerülnek.
-                $this->conn->preparedInsert("Kosar",array("u_id","termek_id","mennyiseg"),array($this->getId(),$value->getId(),$quantity));
+                $this->conn->preparedInsert("Kosar", array("u_id", "termek_id", "mennyiseg"), array($this->getId(), $value->getId(), $quantity));
             }
         }
 
@@ -118,22 +142,26 @@ class UserAsCustomer extends User
     {
         //termék id összegűjtése a user_id alapján
         $stmt = $this->conn->preparedQuery("SELECT * FROM Kosar WHERE u_id = ?", array($this->getId()));
-        while ($row = mysqli_fetch_assoc($stmt, MYSQLI_BOTH)) {
+        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
 
             //a termék adatok összegűjtése a termék_id alapján (row[1])
             $stmtProduct = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row[1]));
-            while ($rowProduct = mysqli_fetch_array($stmtProduct, MYSQLI_BOTH)) {
+            while ($rowProduct = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
                 //használandó objektumok adatainak össze szedése: kategória, csomag, kiemelés
-                $categ = new Category($rowProduct[3]);
-                $categ->setName($categ->selectName($this->getId()));
+                $category = new Category($rowProduct[3]);
+                //$category->setName($category->selectName($this->getId()));
+                /*
+                 * átköltöztetve a konstrukorba, ha nem szép dolog, akkor hazsnálom ezt itt, minden esetre ott
+                 * kevesebb metódus hívás
+                */
                 $pack = new Package($rowProduct[2]);
-                $pack->setName($pack->selectName($this->getId()));
-                $highl = new Highlight($rowProduct[9]);
-                $highl->setName($highl->selectName($highl->getId()));
+                //$pack->setName($pack->selectName($this->getId()));
+                $highlight = new Highlight($rowProduct[9]);
+                //$highlight->setName($highlight->selectName($highlight->getId()));
 
                 //termék összeállítása és hozzáadása a kosárhoz
-                $this->cart->addProduct(new Product($rowProduct[0], $rowProduct[1], $pack, $categ, $rowProduct[4], $rowProduct[5],
-                    $rowProduct[6], $rowProduct[7], $rowProduct[8], $highl, $rowProduct[10], $rowProduct[11]), $row[2]); //$row[2] a mennyiség
+                $this->cart->addProduct(new Product($rowProduct[0], $rowProduct[1], $pack, $category, $rowProduct[4], $rowProduct[5],
+                    $rowProduct[6], $rowProduct[7], $rowProduct[8], $highlight, $rowProduct[10], $rowProduct[11]), $row[2]); //$row[2] a mennyiség
             }
         }
 

@@ -16,10 +16,15 @@ class Category
      * @param $id
      * @param $name
      */
-    public function __construct($id, $name)
+    public function __construct($id, $name=NULL)
     {
         $this->id = $id;
-        $this->name = $name;
+        if($name !== NULL) {
+            $this->name = $name;
+        }
+        else {
+            $this->name = $this->selectName($id);
+        }
     }
 
     /**
@@ -68,7 +73,7 @@ class Category
     public function selectName($id){
         $conn = new ConnectionHandler();
         $stmt = $conn->preparedQuery("SELECT kat_nev FROM Kategoriak WHERE kat_azon=?",array($id));
-        $row = mysqli_fetch_array($stmt,MYSQLI_BOTH);
+        $row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_FIRST);
 
         return $row[1];
     }

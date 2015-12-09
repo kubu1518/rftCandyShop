@@ -1,5 +1,7 @@
 <?php
 
+require_once("User.class.php");
+
 /**
  * Created by PhpStorm.
  * User: ngg

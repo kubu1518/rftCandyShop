@@ -1,0 +1,64 @@
+
+
+
+#workzone nav span {
+    display: block;
+    font-family: 'Lobster', cursive;
+    color: white;
+    background-image: url(../images/dc8772d9.png);
+    padding: 5px;
+    font-size: 22px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px black;
+    margin: 0 auto;
+}
+
+#workzone nav {
+    width: 25%;
+    min-width: 20%;
+    float: left;
+    padding-bottom: 60px;
+    border-right: 2px solid #FFF9FC;
+    border-bottom: 2px solid #FFF9FC;
+    border-bottom-right-radius: 4em;
+    -webkit-border-bottom-right-radius: 4em;
+    -moz-border-bottom-right-radius: 4em;
+    border-bottom-left-radius: 6em 0.5em;
+    -webkit-border-bottom-left-radius: 3em 1em;
+    -moz-border-bottom-left-radius: 3em 1em;
+}
+
+#workzone nav ul {
+    color: #F39EB1;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin: 10px;
+
+}
+
+#workzone nav ul li {
+    font-size: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #CCC;
+
+}
+
+#workzone nav ul li:last-child {
+    border-bottom: none;
+
+}
+
+#workzone nav ul li {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    background-color: inherit;
+    cursor: pointer;
+    height: 20px;
+    transition: font-style, margin-left 100ms;
+}
+
+#workzone nav ul li:hover {
+    font-style: oblique;
+    margin-left: 10px;
+}
+

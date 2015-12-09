@@ -1,0 +1,44 @@
+#workzone table {
+    margin: 10px auto;
+    width: auto;
+    padding: 30px;
+    background-image: url("../images/dc8772d9.png");
+    background-repeat: repeat;
+    border-radius: 20px;
+}
+
+#workzone table th, #workzone table td {
+
+    text-align: left;
+    font-family: 'Lobster', cursive;
+    font-size: 23px;
+    color: white;
+
+}
+
+#workzone table th{
+    border: 2px solid aliceblue;
+    padding: 10px;
+    background-image: url("../images/ZenBG.png");
+    border-radius: 20px;
+}
+
+#workzone table td {
+    padding: 15px;
+}
+
+#workzone table input[type="submit"]{
+    background-color: cornflowerblue;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 18px;
+    color: azure;
+    transition: background-color, border,color 100ms;
+    cursor: pointer;
+}
+#workzone table input[type="submit"]:hover{
+    border: 1px solid cornflowerblue;
+    color: cornflowerblue;
+    background-color: azure;
+}

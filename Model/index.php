@@ -107,7 +107,7 @@ echo "db: ".mysqli_num_rows($stmt)."<br>";
 
     }
 */
-
+/*
 $conn = new ConnectionHandler();
 
 
@@ -133,10 +133,34 @@ foreach($v as $value){
 //echo "user: ". $row[2]."<br>";
 
 //$count = $stmt->fetch(PDO::FETCH_NUM);
-$stmt2 = $conn->preparedCountQuery('SELECT count(*) FROM usert WHERE pass= ?',array("dslfkdfhfk"));
-echo "db: ". $stmt2."<br>";
+//$stmt2 = $conn->preparedCountQuery('SELECT count(*) FROM usert WHERE pass= ?',array("dslfkdfhfk"));
+//echo "db: ". $stmt2."<br>";
 
 //echo "id: ".$result."<br>";
+*/
+
+
+echo "<p>Dates</p><br>";
+$tomorrow = strtotime("tomorrow");
+$week = strtotime("+7 day");
+$today = date("Y-m-d");
+echo "Today: ".$today."<br>";
+echo "Tomorrow: ".  date("Y-m-d", $tomorrow)."<br>";
+echo "Today+7 day: ".  date("Y-m-d",$week)."<br>";
+
+
+$d = date("Y-m-d");
+$s = date("Y-m-d", $week);
+$d_start = new DateTime($d);
+$d_end = new DateTime($s);
+
+$d_diff = $d_start->diff($d_end);
+echo $d_diff->format("%R");
+echo $d_diff->days;
+
+//echo "diff: ". date_diff( $w, $d , FALSE) ."<br>";
+
+
 
 ?>
 </body>

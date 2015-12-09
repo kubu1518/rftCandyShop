@@ -1,5 +1,9 @@
 <?php
 
+require_once("User.class.php");
+require_once("Cart.class.php");
+require_once("Cart.class.php");
+
 /**
  * Created by PhpStorm.
  * User: ngg
@@ -9,7 +13,7 @@
 class UserAsCustomer extends User
 {
     private $cart;
-    private $orders;
+    private $orders[];
     private $actual_order;
     private $conn;
 

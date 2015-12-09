@@ -12,7 +12,7 @@ require_once('ConnectionHandler.class.php');
 class Registration
 {
 
-    private $email, $password, $table;
+    private $email, $password, $passwordC, $table;
     private $ch;
 
     /**
@@ -27,11 +27,12 @@ class Registration
     }
 
 
-   public function registration($pEmail, $pPassword)
+   public function registration($pEmail, $pPassword,$pPasswordC)
     {
 
         $this->email = $pEmail;
         $this->password = $pPassword;
+        $this->passwordC = $pPasswordC;
         $this->table = "felhasznalok";
         /**
          *
@@ -72,6 +73,7 @@ class Registration
     private function cleanPostedData(){
             $this->email = filter_var($this->email,FILTER_SANITIZE_EMAIL);
             $this->password = filter_var($this->password,FILTER_SANITIZE_STRING);
+            $this->passwordC = filter_var($this->password,FILTER_SANITIZE_STRING);
     }
 
     private function emailCheck(){
@@ -98,7 +100,10 @@ class Registration
                 !preg_match("/[a-z]/", $this->password) ||
                 !preg_match("/[0-9]/", $this->password)) {
                 return "A jelszónak kis- és nagybetűket, illetve számot kell tartalmaznia";
-            } else {
+            } else if($this->password !== $this->passwordC) {
+                echo "itt voltam";
+                return "A két jelszó nem egyezik meg";
+            }else{
                 return "";
             }
         }

@@ -1,5 +1,5 @@
 <?php
-include "User.class.php";
+require_once("User.class.php");
 
 /**
  * Created by PhpStorm.

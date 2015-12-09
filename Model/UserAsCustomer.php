@@ -2,18 +2,19 @@
 
 require_once("User.class.php");
 require_once("Cart.class.php");
-require_once("Cart.class.php");
+require_once("Product.class.php");
+require_once("Order.class.php");
 
 /**
  * Created by PhpStorm.
- * User: ngg
+ * User: ngg, István
  * Date: 12/4/2015
  * Time: 11:50 AM
  */
 class UserAsCustomer extends User
 {
     private $cart;
-    private $orders[];
+    private $orders;
     private $actual_order;
     private $conn;
 
@@ -24,11 +25,8 @@ class UserAsCustomer extends User
     {
         parent::__construct($user_id, $email, $password);
         $this->conn = new ConnectionHandler();
-        $this->cart = new Cart();
-        $this->orders = new Order();
-
+        $this->orders = array(); /*ideiglenesen mert ez egy picitt bonyolult lesz*/
         $this->cart = $this->loadCart();
-
     }
 
     /**
@@ -142,32 +140,59 @@ class UserAsCustomer extends User
      * Lekéri az adatbázisból az Ügyfélhez tartozó kosár tartalmát,
      * majd beállítja a Cart objektum értékét a lekért adatokból.
      */
+//    public function loadCart()
+//    {
+//        //termék id összegűjtése a user_id alapján
+//        $stmt = $this->conn->preparedQuery("SELECT * FROM Kosar WHERE u_id = ?", array($this->getId()));
+//        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+//
+//            //a termék adatok összegűjtése a termék_id alapján (row[1])
+//            $stmtProduct = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row[1]));
+//            while ($rowProduct = $stmtProduct->fetch(PDO::FETCH_NUM)) {
+//                //használandó objektumok adatainak össze szedése: kategória, csomag, kiemelés
+//                $category = new Category($rowProduct[3]);
+//                //$category->setName($category->selectName($this->getId()));
+//                /*
+//                 * átköltöztetve a konstrukorba, ha nem szép dolog, akkor hazsnálom ezt itt, minden esetre ott
+//                 * kevesebb metódus hívás
+//                */
+//                $pack = new Package($rowProduct[2]);
+//                //$pack->setName($pack->selectName($this->getId()));
+//                $highlight = new Highlight($rowProduct[9]);
+//                //$highlight->setName($highlight->selectName($highlight->getId()));
+//
+//                //termék összeállítása és hozzáadása a kosárhoz
+//                $this->cart->addProduct(new Product($rowProduct[0], $rowProduct[1], $pack, $category, $rowProduct[4], $rowProduct[5],
+//                    $rowProduct[6], $rowProduct[7], $rowProduct[8], $highlight, $rowProduct[10], $rowProduct[11]), $row[2]); //$row[2] a mennyiség
+//            }
+//        }
+//
+//    }
+
     public function loadCart()
     {
+        $products = [];
+        $quantities = [];
         //termék id összegűjtése a user_id alapján
         $stmt = $this->conn->preparedQuery("SELECT * FROM Kosar WHERE u_id = ?", array($this->getId()));
-        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-
-            //a termék adatok összegűjtése a termék_id alapján (row[1])
-            $stmtProduct = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row[1]));
-            while ($rowProduct = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-                //használandó objektumok adatainak össze szedése: kategória, csomag, kiemelés
-                $category = new Category($rowProduct[3]);
-                //$category->setName($category->selectName($this->getId()));
-                /*
-                 * átköltöztetve a konstrukorba, ha nem szép dolog, akkor hazsnálom ezt itt, minden esetre ott
-                 * kevesebb metódus hívás
-                */
-                $pack = new Package($rowProduct[2]);
-                //$pack->setName($pack->selectName($this->getId()));
-                $highlight = new Highlight($rowProduct[9]);
-                //$highlight->setName($highlight->selectName($highlight->getId()));
-
-                //termék összeállítása és hozzáadása a kosárhoz
-                $this->cart->addProduct(new Product($rowProduct[0], $rowProduct[1], $pack, $category, $rowProduct[4], $rowProduct[5],
-                    $rowProduct[6], $rowProduct[7], $rowProduct[8], $highlight, $rowProduct[10], $rowProduct[11]), $row[2]); //$row[2] a mennyiség
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            //a termék adatok összegűjtése a termék_id alapján (row[termek_id])
+            $stmtProduct = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row["termek_id"]));
+            while ($rowProduct = $stmtProduct->fetch(PDO::FETCH_ASSOC)) {
+                  $products[] = new Product($rowProduct);
+                  /*Csak t_azonnal indexelem mert ha esetleg lesz szükség még másra is a termékből, nem csak a nevére, mikor
+                  a kosárba kiírjuk, akkor ott legyen minden*/
+                  $quantities[$rowProduct['t_azon']] = $row['mennyiseg'];
             }
         }
+        return new Cart($products,$quantities);
+
+    }
+
+    /**
+     *A felhasználó rendelései
+     */
+    public function loadOrders(){
 
     }
 }

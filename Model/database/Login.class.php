@@ -13,7 +13,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/UserAsStorekeeper.php");
  */
 class Login
 {
-    private $uid,$email, $password, $table;
+    private $uid, $email, $password, $table;
     private $ch;
 
     /**
@@ -49,12 +49,11 @@ class Login
 
 
             $error = $this->checkLoginData();
-            if(substr($error,0,2) !== "ok"){
+            if (substr($error, 0, 2) !== "ok") {
                 return $error;
-            }
-            else{
-                $authLevel = substr($error,2);
-                return "ok".$this->createSession($authLevel);
+            } else {
+                $authLevel = substr($error, 2);
+                return "ok" . $this->createSession($authLevel);
             }
 
         } else {
@@ -63,13 +62,15 @@ class Login
 
     }
 
-    private function cleanPostedData(){
-        $this->email = filter_var($this->email,FILTER_SANITIZE_EMAIL);
-        $this->password = filter_var($this->password,FILTER_SANITIZE_STRING);
+    private function cleanPostedData()
+    {
+        $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
+        $this->password = filter_var($this->password, FILTER_SANITIZE_STRING);
     }
 
-    public function checkLoginData(){
-        if($this->email && $this->password) {
+    public function checkLoginData()
+    {
+        if ($this->email && $this->password) {
             $stmt = $this->ch->preparedQuery("SELECT * FROM $this->table where email = ?", array($this->email));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result) {
@@ -82,7 +83,7 @@ class Login
             } else {
                 return "Nem létezik ilyen email";
             }
-        }else{
+        } else {
             return "Nincs megadva email vagy jelszó";
         }
     }
@@ -91,10 +92,15 @@ class Login
     {
         $direct = "";
         session_start();
-        switch ($authLevel){
-            case 'U' : $_SESSION['actUser'] = new UserAsCustomer($this->uid,$this->email,$this->password); $direct = "index.php"; break;
-            case 'R' : break;
-            case 'V' : break;
+        switch ($authLevel) {
+            case 'U' :
+                $_SESSION['actUser'] = serialize(new UserAsCustomer($this->uid, $this->email, $this->password));
+                $direct = "index.html";
+                break;
+            case 'R' :
+                break;
+            case 'V' :
+                break;
         }
 
         return $direct;

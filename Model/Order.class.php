@@ -15,7 +15,7 @@ class Order
     private $status;
     private $quantities;
     private $products;
-    private $amount;
+
 
     /**
      * Order constructor.
@@ -26,9 +26,11 @@ class Order
      * @param $status
      * @param $quantities
      * @param $products
-     * @param $amount
      */
-    public function __construct( $orderDate, $deliveryAddress, $billAddress, $status, $quantities, $products, $amount)
+
+
+
+    public function __construct( $orderDate, $deliveryAddress, $billAddress, $status, $quantities, $products)
     {
         $this->orderDate = $orderDate;
         $this->deliveryAddress = $deliveryAddress;
@@ -36,7 +38,6 @@ class Order
         $this->status = $status;
         $this->quantities = $quantities;
         $this->products = $products;
-        $this->amount = $amount;
     }
 
 

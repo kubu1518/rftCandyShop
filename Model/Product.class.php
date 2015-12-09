@@ -38,20 +38,39 @@ class Product
      * @param $img
      * @param $description
      */
-    public function __construct($id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
+
+    
+    /*Hölgyeim és uraim! Bosszantja önöket, h mikor adatbéből buildel objectet, az összes paramétert
+     át kell adni a resultsetből, ami ugyebár a resultset indexelését figyelembe véve, egy sok fieldes classnél igen-igen fos meló?
+     Akkor miért nem tömbözik??? :D
+     */
+    public function __construct(){
+
+    }
+
+    public static function  createProduct($id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description){
+        $tmp = func_get_args();
+        return self::createProductByArray($tmp);
+    }
+
+
+    public static function createProductByArray($productFields)
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->package = $package;
-        $this->category = $category;
-        $this->weight = $weight;
-        $this->price = $price;
-        $this->min_order = $min_order;
-        $this->min_stock = $min_stock;
-        $this->discount = $discount;
-        $this->highlight = $highlight;
-        $this->img = $img;
-        $this->description = $description;
+        $instance = new self();
+        $instance->id = $productFields['t_azon'];
+        $instance->name = $productFields['nev'];
+        $instance->category = $productFields['kat_azon'];
+        $instance->package = $productFields['kisz_azon'];
+        $instance->weight = $productFields['suly'];
+        $instance->price = $productFields['egysegar'];
+        $instance->min_order = $productFields['min_rend'];
+        $instance->min_stock = $productFields['min_keszlet'];
+        $instance->discount = $productFields['akcio'];
+        $instance->highlight = $productFields['kim_azon'];
+        $instance->img = $productFields['reszletek'];
+        $instance->description = $productFields['kep'];
+
+        return $instance;
     }
 
 

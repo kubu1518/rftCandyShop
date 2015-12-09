@@ -23,6 +23,7 @@ class Product
     private $img;
     private $description;
 
+
     /**
      * Product constructor.
      * @param $id
@@ -265,6 +266,7 @@ class Product
     {
         $this->description = $description;
     }
+
 
 
     public function __toString()

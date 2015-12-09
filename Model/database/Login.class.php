@@ -95,7 +95,7 @@ class Login
         switch ($authLevel) {
             case 'U' :
                 $_SESSION['actUser'] = serialize(new UserAsCustomer($this->uid, $this->email, $this->password));
-                $direct = "index.html";
+                $direct = "index.php";
                 break;
             case 'R' :
                 break;

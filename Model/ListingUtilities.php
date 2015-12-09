@@ -1,5 +1,7 @@
 <?php
 
+require_once('database/ConnectionHandler.class.php');
+
 /**
  * Created by PhpStorm.
  * User: ngg
@@ -121,7 +123,13 @@ class ListingUtilities
     public
     function listingProductsGroups()
     {
-        return null; //String array
+        $back = [];
+        $stmt = $this->conn->preparedQuery("SELECT * FROM kategoriak"); /*olyan katokat amelyekből van a spejzban de majd később*/
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $back[$row['kat_azon']] = $row['kat_nev'];
+        }
+        $this->conn->close();
+        return $back; //String array
     }
 
     public
@@ -129,8 +137,6 @@ class ListingUtilities
     {
         return null;
     }
-
-
 
 
 }

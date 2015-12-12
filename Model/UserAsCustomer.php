@@ -16,7 +16,6 @@ class UserAsCustomer extends User
     private $cart;
     private $orders;
     private $actual_order;
-    private $conn;
 
     /**
      * UserAsCustomer constructor.
@@ -24,7 +23,6 @@ class UserAsCustomer extends User
     public function __construct($user_id, $email, $password)
     {
         parent::__construct($user_id, $email, $password);
-        $this->conn = new ConnectionHandler();
         $this->orders = array(); /*ideiglenesen mert ez egy picitt bonyolult lesz*/
         $this->cart = $this->loadCart();
     }
@@ -109,7 +107,7 @@ class UserAsCustomer extends User
      */
     public function saveCart()
     {//void
-
+        $conn = new ConnectionHandler();
         //bejárjuk a kosárban lévő termékek listáját.
         foreach ($this->getCart()->getItems() as $value) {
 
@@ -117,18 +115,18 @@ class UserAsCustomer extends User
 
             //ami benne van, arra mindre megy az update.
             $count = (
-            $this->conn->preparedCountQuery("SELECT count(*) FROM Kosar WHERE u_id=? AND termek_id=?",
+            $conn->preparedCountQuery("SELECT count(*) FROM Kosar WHERE u_id=? AND termek_id=?",
                 array($this->getId(), $value->getId()))
             );
 
             if ($count === 1) {
                 //amelyek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
-                $stmt = $this->conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
+                $stmt = $conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
                     array("u_id", "termek_id"), array($this->getId(), $value->getId()));
 
             } else {
 //amelek eddig nem voltak a Kosar táblában beszúrásra kerülnek.
-                $this->conn->preparedInsert("Kosar", array("u_id", "termek_id", "mennyiseg"), array($this->getId(), $value->getId(), $quantity));
+                $conn->preparedInsert("Kosar", array("u_id", "termek_id", "mennyiseg"), array($this->getId(), $value->getId(), $quantity));
             }
         }
 
@@ -171,13 +169,14 @@ class UserAsCustomer extends User
 
     public function loadCart()
     {
+        $conn = new ConnectionHandler();
         $products = [];
         $quantities = [];
         //termék id összegűjtése a user_id alapján
-        $stmt = $this->conn->preparedQuery("SELECT * FROM Kosar WHERE u_id = ?", array($this->getId()));
+        $stmt = $conn->preparedQuery("SELECT * FROM Kosar WHERE u_id = ?", array($this->getId()));
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             //a termék adatok összegűjtése a termék_id alapján (row[termek_id])
-            $stmtProduct = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row["termek_id"]));
+            $stmtProduct = $conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row["termek_id"]));
             while ($rowProduct = $stmtProduct->fetch(PDO::FETCH_ASSOC)) {
                   $products[] = new Product($rowProduct);
                   /*Csak t_azonnal indexelem mert ha esetleg lesz szükség még másra is a termékből, nem csak a nevére, mikor

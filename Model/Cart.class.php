@@ -1,4 +1,6 @@
 <?php
+require_once('Product.class.php');
+
 /**
  * @author ngg;
  */
@@ -17,45 +19,47 @@
 class Cart
 {
 
-    private $items;
-    private $quantity;
-    private $conn;
+    /*Egy objectumot ha lementessz, nem lehet kapcsolattal serializálni, tehát csak aggregáljuk CH viselkedésést.*/
+    private $products;
+    private $quantities;
     private $AFA;
 
     function __construct()
     {
-        $this->items = array();
-        $this->quantity = array();
-        $this->AFA = 1.27;
-        $this->conn = new ConnectionHandler();
+        $this->products = array();
+        $this->quantities = array();
+        $this->AFA = 1.27; // TODO: Az LUba egy getAFA
+
+
+
     }
 
-    function getItems()
+    function getProducts()
     {
-        return $this->items;
+        return $this->products;
     }
 
-    function getQuantity()
+    function getQuantities()
     {
-        return $this->quantity;
+        return $this->quantities;
     }
 
-    function setItems($items)
+    function setProducts($products)
     {
-        $this->items = $items;
+        $this->products = $products;
     }
 
-    function setQuantity($quantity)
+    function setQuantities($quantities)
     {
-        $this->quantity = $quantity;
+        $this->quantities = $quantities;
     }
 
     public function __toString()
     {
         $result = "";
 
-        foreach ($this->items as $key => $value) {
-            $result .= $this->items[$key] . " => " . $this->quantity[$key] . " db.<br>";
+        foreach ($this->products as $key => $value) {
+            $result .= $this->products[$key] . " => " . $this->quantities[$this->products[$key]->getId()] . " db.<br>";
         }
 
         return $result;
@@ -70,9 +74,9 @@ class Cart
     public function addProduct($product, $quantity)
     {
 
-        array_push($this->items, $product);
+        array_push($this->products, $product);
+        $quantity[$product->getId()] = $this->quantities;
 
-        array_push($this->quantity, $quantity);
 
         //echo "elemek száma: " . count($this->items) . " db & " . count($this->quantity) . " db.<br>";
     }
@@ -85,8 +89,8 @@ class Cart
      */
     public function modifyProductQuantity($product, $quantity)
     {
-        $index = array_search($product, $this->items);
-        $this->quantity[$index] = $quantity;
+        $index = array_search($product, $this->products);
+        $this->quantities[$this->products[$index]->getId()] = $quantity;
 
     }
 
@@ -97,11 +101,11 @@ class Cart
      */
     public function removeProduct($product)
     {
-        $index = array_search($product, $this->items);
+        $index = array_search($product, $this->products);
         if ($index !== FAlSE) {
 
-            unset($this->quantity[$index]);
-            unset($this->items[$index]);
+            unset($this->quantities[$this->products[$index]->getId()]);
+            unset($this->products[$index]);
         } else {
             throw new Exception("Nincs ilyen termék a kosárban!");
         }
@@ -116,12 +120,12 @@ class Cart
     {
 
         $result = "<div id='cart'>Cart<br>";
-        foreach ($this->items as $key => $value) {
+        foreach ($this->products as $key => $value) {
             //div id = termék id;
             $result .= "<div id='" . $value->getId() . "' class='basket_product'>"
                 . "<img src='" . $value->getImg() . "' title='" . $value->getImg() . "' height=40 width=40> "
                 . $value->getName() . " <input type='number' name='" . $value->getId()
-                . "' min='" . $value->getMinOrder() . "' max='100' value='" . $this->quantity[$key] . "'> db"
+                . "' min='" . $value->getMinOrder() . "' max='100' value='" . $this->quantities[$key] . "'> db"
                 . "<input type='button' onclick='alert(" . $value->getId() . ")' value='Törlés'> Ár: "
                 . $this->itemSub($key) . " Ft.";
 
@@ -144,7 +148,7 @@ class Cart
      */
     public function getProductByName($name)
     {
-        foreach ($this->items as $item) {
+        foreach ($this->products as $item) {
             if ($item->getName() === $name) {
                 return $item;
             }
@@ -162,8 +166,8 @@ class Cart
     {
         $result = 0;
 
-        foreach ($this->items as $key => $value) {
-            $result += $this->quantity[$key] * $this->items[$key]->getPrice();
+        foreach ($this->products as $key => $value) {
+            $result += $this->quantities[$key] * $this->products[$key]->getPrice();
         }
         return $result;
     }
@@ -177,7 +181,7 @@ class Cart
     public function itemSub($index)
     {
 
-        return $this->quantity[$index] * $this->items[$index]->getPrice();
+        return $this->quantities[$index] * $this->products[$index]->getPrice();
     }
 
     /**
@@ -187,11 +191,11 @@ class Cart
      * @return int $index
      */
     public function  indexOfProduct($product){
-        return array_search($product, $this->items);
+        return array_search($product, $this->products);
     }
 
     public function valueOfQuantity($product){
-        return $this->quantity[$this->indexOfProduct($product)];
+        return $this->quantities[$this->indexOfProduct($product)];
     }
 
 }

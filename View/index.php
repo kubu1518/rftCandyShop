@@ -1,5 +1,25 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/UserAsCustomer.php");
+
+
+if (!isset($_GET["login"])) {
+    $autControl = <<<AUTH
+    <a href='RegistrationFrom.php'>Regisztráció</a>
+    <a href='LoginForm.php'>Bejelentkezés</a>"
+AUTH;
+} else {
+    session_start();
+    if (isset($_SESSION['actUser'])) {
+        $user = unserialize($_SESSION['actUser']);
+
+        $autControl = <<<AUTH
+    <span>$user->getEmail()</span>
+    <span id='logout'>Kijelentkezés</span>
+AUTH;
+    } else die(utf8_decode("Nem létezik munkamenet"));
+
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -22,8 +42,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
         </audio>
     </div>
     <div class="head object2">
-        <a href="#">Regisztráció</a>
-        <a href="#">Bejelentkezés</a>
+
+        <?php echo $autControl; ?>
+
     </div>
 </div>
 <div id="mainContainer">
@@ -35,7 +56,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
                 $lu = new ListingUtilities();
                 $categories = $lu->listingProductsGroups();
                 foreach ($categories as $k => $v) {
-                    echo utf8_encode("<li id='$k'>$v</li>");
+                    echo "<li id='$k'>$v</li>";
                 }
                 ?>
                 <!--<li><button type="button" class=navbutton>Rendeléseim megtekintése</button></li>-->
@@ -47,7 +68,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
             <select id="searchCategory" name="searchCategory">
                 <?php
                 foreach ($categories as $k => $v) {
-                    echo utf8_encode("<option value='$k'>$v</option>");
+                    echo "<option value='$k'>$v</option>";
                 }
                 ?>
             </select>

@@ -49,7 +49,7 @@
             }else{
                 $url = $_SERVER['HTTP_REFERER'];
                 $redirect = str_replace(basename($_SERVER['PHP_SELF']),substr($back,2),$url);
-                header("Location: $redirect");
+                header("Location: $redirect"."?login=on");
             }
 
         }

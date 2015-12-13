@@ -25,12 +25,11 @@ class Cart
     private $quantities;
     private $AFA;
 
-    function __construct($products,$quantities)
+    function __construct($products, $quantities)
     {
         $this->products = $products;
         $this->quantities = $quantities;
         $this->AFA = 1.27; // TODO: Az LUba egy getAFA
-
 
 
     }
@@ -71,7 +70,8 @@ class Cart
      *A kosárban lévő tételek száma
      * @return int
      */
-    public function getSize(){
+    public function getSize()
+    {
         return count($this->products);
     }
 
@@ -85,9 +85,12 @@ class Cart
      */
     public function addProduct($product, $quantity)
     {
-        $this->products[$product->getId()] = $product;
-        $this->quantities[$product->getId()] = $quantity;
-
+        if (!isset($this->products[$product->getId()])) {
+            $this->products[$product->getId()] = $product;
+            $this->quantities[$product->getId()] = $quantity;
+        } else {
+            $this->quantities[$product->getId()] += $quantity;
+        }
 
         //echo "elemek száma: " . count($this->items) . " db & " . count($this->quantity) . " db.<br>";
     }
@@ -98,11 +101,9 @@ class Cart
      * @param Product $product
      * @param int $quantity
      */
-    public function modifyProductQuantity($product, $quantity)
+    public function modifyProductQuantity($productId, $quantity)
     {
-        $index = array_search($product, $this->products);
-        $this->quantities[$index] = $quantity;
-
+        $this->quantities[$productId] = $quantity;
     }
 
     /**
@@ -111,16 +112,11 @@ class Cart
      * @param Product $product
      * @throws Exception
      */
-    public function removeProduct($product)
+    public function removeProduct($productid)
     {
-        $index = array_search($product, $this->products);
-        if ($index !== FAlSE) {
+        unset($this->quantities[$productid]);
+        unset($this->products[$productid]);
 
-            unset($this->quantities[$index]);
-            unset($this->products[$index]);
-        } else {
-            throw new Exception("Nincs ilyen termék a kosárban!");
-        }
     }
 
     /**
@@ -128,27 +124,7 @@ class Cart
      *
      * @return String htmlOutput
      */
-    public function watchCart()
-    {
 
-        $result = "<div id='cart'>Cart<br>";
-        foreach ($this->products as $key => $value) {
-            //div id = termék id;
-            $result .= "<div id='" . $value->getId() . "' class='basket_product'>"
-                . "<img src='" . $value->getImg() . "' title='" . $value->getImg() . "' height=40 width=40> "
-                . $value->getName() . " <input type='number' name='" . $value->getId()
-                . "' min='" . $value->getMinOrder() . "' max='100' value='" . $this->quantities[$key] . "'> db"
-                . "<input type='button' onclick='alert(" . $value->getId() . ")' value='Törlés'> Ár(ÁFA-val):  "
-                . $this->itemSub($key) . " Ft.";
-
-
-            $result .= "</div>";
-        }
-        $result .= "Összeg: " . $this->cartSubTotal() . " Ft.";
-        $result .= "</div>";
-        // TODO : Ezen a kiíratáson kellesz dolgozni
-        echo $result;
-    }
 
     /**
      * Megadott termék név alapján keres terméket a kosárban, ha van, akkor visszatér
@@ -168,6 +144,7 @@ class Cart
 
         return NULL;
     }
+
     /**
      * Megállapítja, hogy a kosárban lévő tételek mennyibe fognak kerülni összesen.
      *
@@ -192,7 +169,7 @@ class Cart
     public function itemSub($index)
     {
 
-        return $this->quantities[$index] * ($this->products[$index]->getPrice() * $this->AFA );
+        return $this->quantities[$index] * ($this->products[$index]->getPrice() * $this->AFA);
     }
 
     /**
@@ -201,15 +178,15 @@ class Cart
      * @param $product
      * @return int $index
      */
-    public function  indexOfProduct($product){
+    public function  indexOfProduct($product)
+    {
         return array_search($product, $this->products);
     }
 
-    public function valueOfQuantity($product){
+    public function valueOfQuantity($product)
+    {
         return $this->quantities[$this->indexOfProduct($product)];
     }
-
-
 
 
 }

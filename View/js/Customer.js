@@ -1,13 +1,16 @@
 /**
  * Created by István on 2015.12.12..
  */
+
+$( window ).unload(function() {
+    authButtonsLoad();
+});
+
+
 $(document).ready(function () {
-    $("#logout").click(function () {
-        $.get("../../rftCandyshop/Controll/ControlLogout.php", {}, function (data) {
-            //alert(data);
-            location.reload()
-        })
-    });
+
+    authButtonsLoad();
+
 
     $("#search").click(function () {
         var cat = $("#searchCategory option:selected").val();
@@ -29,6 +32,7 @@ $(document).ready(function () {
 
 
 
+
     $(".category").click(function () {
         var id = $(this).attr("id");
         $("#searchName").val("");
@@ -47,6 +51,19 @@ function addCart(button){
        t_id : tid,
         qauntity : qauntity
     },function(data){
-        alert(data)
+        alert(data);
+        authButtonsLoad();
     })
+}
+
+function authButtonsLoad (){
+    alert("auth but frissítés");
+    $(".head.object2").load("../../rftCandyshop/Controll/ControlAuthButtons.php",function(){
+        $("#logout").click(function () {
+            $.get("../../rftCandyshop/Controll/ControlLogout.php", {}, function (data) {
+                alert(data);
+                window.location = "http://localhost/rftCandyShop/View/index.php"
+            })
+        });
+    });
 }

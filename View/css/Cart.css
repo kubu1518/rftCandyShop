@@ -1,0 +1,15 @@
+#cartdiv{
+    margin: 0 auto;
+    background-color: #d492c5;
+    border-radius: 10px;
+    font-family: 'Lobster', cursive;
+
+}
+
+#cartdiv input[type='number']:invalid{
+    border: 1px solid red;
+}
+
+#cartdiv input[type='number']:valid{
+    border: 1px solid green;
+}

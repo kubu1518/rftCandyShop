@@ -111,7 +111,6 @@ class UserAsCustomer extends User
         $conn = new ConnectionHandler();
         //bejárjuk a kosárban lévő termékek listáját.
         foreach ($this->getCart()->getProducts() as $value) {
-            echo $value->getName();
 
             $quantity = $this->getCart()->valueOfQuantity($value);
 
@@ -122,7 +121,7 @@ class UserAsCustomer extends User
 
 
 
-            if ($count[0] === 1) {
+            if ($count[0] >= 1) {
                 //amelyek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
                 $conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
                     "u_id = ? and termek_id = ?", array($this->getId(), $value->getId()));

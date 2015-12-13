@@ -1,10 +1,13 @@
 
 .productbox {
+    margin: 25px;
+    float: left;
     background: #f4f4f4;
     border: 1px solid #ddd;
     text-align: center;
     padding: 10px;
     width: 300px;
+    height: auto;
 }
 .productbox button {
     font-family: 'Roboto Condensed', sans-serif;
@@ -19,10 +22,6 @@
     background: #d492c5;
 }
 
-.productbox button .icon-cart {
-    margin-left: 5px;
-    font-size: 20px
-}
 .productbox p {
     font-weight: bold;
 }
@@ -33,27 +32,20 @@
 .productbox .image {
     background: #fff;
     padding: 10px;
-    position: relative
+    position: relative;
+    width: 280px;
+    height: 250px;
 }
 .productbox .image span {
-    position: absolute
+     position: absolute
+ }
+
+.productbox .image img {
+    width: 280px;
+    height: 250px;
 }
-.productbox .image .icon-star {
-    top: 10px;
-    left: 10px;
-    font-size: 20px;
-    color: lightgrey;
-    display: none;
-    cursor: pointer
-}
-.productbox .image:hover .icon-star,
-.icon-star.active {
-    display: inline-block
-}
-.productbox .icon-star.active {
-    color: orange;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2)
-}
+
+
 .productbox .image .sale {
     background: green;
     color: #fff;
@@ -62,4 +54,18 @@
     padding: 3px 10px;
     bottom: 10px;
     right: 10px
+}
+
+.productbox .details{
+    width: 280px;
+    height: 100px;
+    margin: 0 auto;
+    font-size: 10px;
+    display: none;
+
+}
+
+.productbox input{
+    width: 40px;
+    margin: 0 10px;
 }

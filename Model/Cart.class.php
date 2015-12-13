@@ -85,7 +85,6 @@ class Cart
      */
     public function addProduct($product, $quantity)
     {
-
         $this->products[$product->getId()] = $product;
         $this->quantities[$product->getId()] = $quantity;
 

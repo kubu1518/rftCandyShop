@@ -3,7 +3,8 @@
  */
 $(document).ready(function () {
     $("#logout").click(function () {
-        $.get("../../Candyshop/Controll/ControlLogout.php", {}, function (data) {
+        $.get("../../rftCandyshop/Controll/ControlLogout.php", {}, function (data) {
+            //alert(data);
             location.reload()
         })
     });
@@ -16,9 +17,17 @@ $(document).ready(function () {
                 sName  : name,
                 sCategory : cat
             },function(data){
-                $("#alterablecontent").html(data)
+                $("#alterablecontent").html(data);
+                $(".pbdet").click(function (){
+                    $(this).siblings(".details").slideToggle("slow");
+                });
+                $(".pbcart").click(function (){
+                    addCart($(this))
+                });
             })
     });
+
+
 
     $(".category").click(function () {
         var id = $(this).attr("id");
@@ -29,3 +38,15 @@ $(document).ready(function () {
     })
 
 });
+
+
+function addCart(button){
+    var tid = button.parent().attr("id");
+    var qauntity = button.siblings("input").val();
+    $.get("../../rftCandyshop/Controll/ControlAddCart.php",{
+       t_id : tid,
+        qauntity : qauntity
+    },function(data){
+        alert(data)
+    })
+}

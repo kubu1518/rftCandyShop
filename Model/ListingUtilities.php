@@ -96,7 +96,7 @@ class ListingUtilities
     {
         $searchEntitiy = $name == "" ? "%" : "%" . $name . "%";
         $sql = <<<SELECT
-                SELECT t_azon, nev, kat_nev, kisz_nev, suly, egysegar,
+                SELECT t_azon, nev, kat_nev, kisz_nev, suly, egysegar, min_rend,
 	            kim_nev, akcio, reszletek, kep FROM
                 ((termekek t JOIN kategoriak kat ON t.kat_azon = kat.kat_azon)
                  JOIN kiszerelesek kisz ON t.kat_azon = kisz.kisz_azon)
@@ -104,6 +104,15 @@ class ListingUtilities
                  WHERE nev LIKE ? AND t.kat_azon = ?
 SELECT;
         return $this->conn->preparedQuery($sql,array($searchEntitiy,$categ_id))->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     *Azonosító alapján lekéri a terméket.
+     * @return Product object
+     */
+    public function getProductByPID($tid){
+        $ch = new ConnectionHandler();
+        return $ch->preparedQuery("SELECT * FROM termekek WHERE t_azon = ?",array($tid))->fetch(PDO::FETCH_ASSOC);
     }
 
     /**

@@ -93,7 +93,7 @@ class UserAsLeader extends User
     public function productRemoveFromStore($product_id)
     {//void
         try {
-            $this->conn->preparedUpdate("termekek", array("kim_azon"), array("0"), array("t_azon"), array($product_id));
+            $this->conn->preparedUpdate("raktar", array("stat_id"), array("0"), array("stat_id"), array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült a törlés!";
         }

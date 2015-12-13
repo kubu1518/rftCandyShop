@@ -12,7 +12,7 @@ $_SESSION["message"] = "";
  * Time: 9:43 PM
  */
 //include "Header.html";
-require_once $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 
 
 
@@ -20,7 +20,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/Connection
 $conn = new ConnectionHandler();
 
 
-echo "doc: " . $_SERVER['DOCUMENT_ROOT'];
+//echo "doc: " . $_SERVER['DOCUMENT_ROOT'];
 
 
 

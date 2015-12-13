@@ -31,11 +31,12 @@ class UserAsLeader extends User
      */
     public function productAddStore($product)
     {
-        die("temrék neve: " . $product->getName());
+        //die("temrék neve: " . $product->getName());
 
         if ($this->checkProductExist($product->getName()) === FALSE) {
 
             try {
+
 
                 $this->conn->preparedInsert("termekek",
                     array("nev", "kat_azon", "kisz_azon", "suly", "egysegar", "min_keszlet",
@@ -44,7 +45,7 @@ class UserAsLeader extends User
                         $product->getPrice(), $product->getMinOrder(), $product->getMinStock(), $product->getHighlight()
                     , $product->getDiscount(), $product->getDescription(), $product->getImg()));
 
-                die("Sql után!");
+                //die("Sql után!");
 
             } catch (Exception $e) {
                 return new Exception("Nem sikerült elmenteni a terméket!");
@@ -73,7 +74,8 @@ class UserAsLeader extends User
         $stmt = $this->conn->preparedQuery("SELECT count(*) FROM termekek WHERE nev=?", array($name));
         $number = $stmt->fetch(PDO::FETCH_NUM);
 
-        if ($number) {
+        //die("number: " . $number[0]);
+        if ($number[0] >= 1) {
             return TRUE;
         } else {
             return FALSE;

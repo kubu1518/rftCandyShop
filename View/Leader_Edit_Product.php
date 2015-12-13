@@ -13,7 +13,7 @@ $_SESSION["message"] = "";
  */
 //include "Header.html";
 
-include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 $conn = new ConnectionHandler();
 
 ?>

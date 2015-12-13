@@ -53,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 
-        $img_name       = $_FILES['file']['name'];
-        $temp_name  = $_FILES['file']['tmp_name'];
-        $img_name = substr_replace(" ","_",$name);
-        $img_name.=".jpg";
-        $newfilename = "";
-
+        //$img_name       = $_FILES['kep']['name'];
+        //$temp_name  = $_FILES['kep']['tmp_name'];
+        //$img_name = substr_replace(" ","_",$name);
+        //$img_name.=".jpg";
+        //$newfilename = "";
+        $newfilename = null;
         if(isset($name)){
             if(!empty($name)){
 
@@ -77,6 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
        //kontruktor $id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
 
         //$product = Product::createProduct(null, $name,$package,$category,$weight,$price,$minO,$recQ,$action,$highlight,$newfilename,$details);
+
+        $_POST["kep"] = $newfilename;
+        $_POST["t_azon"] = null;
 
         $product = Product::createProductByArray($_POST);
 

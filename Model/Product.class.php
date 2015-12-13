@@ -68,8 +68,8 @@ class Product
         $instance->min_stock = $productFields['min_keszlet'];
         $instance->discount = $productFields['akcio'];
         $instance->highlight = $productFields['kim_azon'];
-        $instance->img = $productFields['reszletek'];
-        $instance->description = $productFields['kep'];
+        $instance->img = $productFields['kep'];
+        $instance->description = $productFields['reszletek'];
 
         return $instance;
     }

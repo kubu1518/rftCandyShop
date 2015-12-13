@@ -152,7 +152,6 @@ class Cart
 
         return NULL;
     }
-
     /**
      * Megállapítja, hogy a kosárban lévő tételek mennyibe fognak kerülni összesen.
      *

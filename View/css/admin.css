@@ -1,0 +1,82 @@
+.frame {
+    align : justify;
+    background-color: lightgrey;
+    width : 845px;
+}
+.menu {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+    width: 800px;
+    height: 50px;
+    align-content: center;
+    background-color: wheat;
+}
+.container {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+    width: 800px;
+    min-height: 500px;
+    alignment: center;
+    align-content: center;
+    background-color: white;
+}
+
+label {
+    color: #B4886B;
+    font-weight: bold;
+    display: block;
+    width: 150px;
+    float: left;
+}
+label:after {
+    content: ": ";
+padding-top: 50px;
+}
+
+body {
+    font: 1em Tahoma, Geneva, sans-serif;
+    color: #333;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+h1, h2, h3 {
+    font-family: "Garamond Bold", "Bookman Old Style Bold", Georgia, serif;
+    color: #F00;
+}
+
+
+fieldset {
+    border: 1px solid #CCA383;
+    width: 400px;
+    background: #FFE8EF;
+    padding: 3px;
+}
+fieldset legend {
+    background: #CCA383;
+    padding: 6px;
+    font-weight: bold;
+}
+label {
+    color: #B4886B;
+    font-weight: bold;
+    display: block;
+    width: 150px;
+    float: left;
+}
+
+label:after { content: ": " }
+
+.editorOff {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    display: none;
+}
+
+.editorOn {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    display: block;
+}

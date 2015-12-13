@@ -249,12 +249,12 @@ class Product
     }
 
 
-
     public function __toString()
     {
         return $this->getId() . " " . $this->getName() . ":&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
         . $this->getPrice() . " " . $this->getImg() . " minOrder: " . $this->getMinOrder();
     }
+
 
 
     public function saveProduct()
@@ -268,12 +268,12 @@ class Product
         $stmtCat = $conn->preparedQuery("SELECT kat_azon FROM Kiszereles WHERE kat_nev=?", arra($this->getCategory()));
         $arr = $stmtCat->fetchAll(PDO::FETCH_ASSOC);
         $category_id = $arr[0];
-        
+
         foreach ($arr as $titleData) {
             echo $titleData['name'];
         }
 
-        $values = array($this->getName(), $this->getCategory()->getId(),$this->getCategory()->getId(), $this->getWeight(), $this->getPrice(), $this->getMinStock(),
+        $values = array($this->getName(), $this->getCategory()->getId(), $this->getCategory()->getId(), $this->getWeight(), $this->getPrice(), $this->getMinStock(),
             $this->getMinOrder(), $this->getHighlight()->getId(), $this->getDiscount(), $this->getDescription(), $this->getImg()
         );
 
@@ -281,7 +281,6 @@ class Product
 
 
     }
-
 
 
 }

@@ -13,7 +13,7 @@ require_once("Cart.class.php");
 class UserAsCustomer extends User
 {
     private $cart;
-    private $orders[];
+    private $orders;
     private $actual_order;
     private $conn;
 

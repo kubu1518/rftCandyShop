@@ -31,6 +31,8 @@ class UserAsLeader extends User
      */
     public function productAddStore($product)
     {
+        die("temrék neve: " . $product->getName());
+
         if ($this->checkProductExist($product->getName()) === FALSE) {
 
             try {
@@ -41,6 +43,8 @@ class UserAsLeader extends User
                     array($product->getName(), $product->getCategory(), $product->getPackage(), $product->getWeight(),
                         $product->getPrice(), $product->getMinOrder(), $product->getMinStock(), $product->getHighlight()
                     , $product->getDiscount(), $product->getDescription(), $product->getImg()));
+
+                die("Sql után!");
 
             } catch (Exception $e) {
                 return new Exception("Nem sikerült elmenteni a terméket!");
@@ -66,9 +70,10 @@ class UserAsLeader extends User
      */
     public function checkProductExist($name)
     {
-        $stmt = $this->conn->preparedCountQuery("SELECT count(*) FROM termekek WHERE nev=?", array($name));
+        $stmt = $this->conn->preparedQuery("SELECT count(*) FROM termekek WHERE nev=?", array($name));
+        $number = $stmt->fetch(PDO::FETCH_NUM);
 
-        if ($stmt >= 1) {
+        if ($number) {
             return TRUE;
         } else {
             return FALSE;
@@ -190,7 +195,7 @@ class UserAsLeader extends User
 
         $orders = array();
 
-        $stmt = $this->conn->preparedQuery("SELECT * FROM megrendelesek WHERE rend_datum >= ? AND rend_datum <= ?",array($start_date,$end_date));
+        $stmt = $this->conn->preparedQuery("SELECT * FROM megrendelesek WHERE rend_datum >= ? AND rend_datum <= ?", array($start_date, $end_date));
         while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
             array_push($row["rend_szam"], $orders);
         }
@@ -202,7 +207,7 @@ class UserAsLeader extends User
             $quantity = 0;
 
             //meghatározott termékre, ha kivesszük a termek_id feltételt, akkor az összes termékre nézné, kényelmesebb is lenne a controller oldalon.
-            $stmt = $this->conn->preparedQuery("SELECT * FROM rendeles_reszletei WHERE rend_szam = ? AND termek_id = ?", array($order,$product_id));
+            $stmt = $this->conn->preparedQuery("SELECT * FROM rendeles_reszletei WHERE rend_szam = ? AND termek_id = ?", array($order, $product_id));
             while ($rowO = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
 
                 if (array_key_exists($rowO["termek_id"], $product_quantity)) {

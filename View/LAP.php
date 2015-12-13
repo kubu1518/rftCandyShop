@@ -20,23 +20,38 @@ include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/UserAsLeader.php";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['submit'])) {
 
-        $name = $_POST["name"];
-        $category = $_POST["category"];
-        $package = $_POST["package"];
-        $weight = $_POST["weight"];
-        $price = $_POST["price"];
-        $recQ = $_POST["recQ"];
-        $minO = $_POST["minO"];
-        $highlight = $_POST["highlight"];
+/*
+        $instance->id = $productFields['t_azon'];
+        $instance->name = $productFields['nev'];
+        $instance->category = $productFields['kat_azon'];
+        $instance->package = $productFields['kisz_azon'];
+        $instance->weight = $productFields['suly'];
+        $instance->price = $productFields['egysegar'];
+        $instance->min_order = $productFields['min_rend'];
+        $instance->min_stock = $productFields['min_keszlet'];
+        $instance->discount = $productFields['akcio'];
+        $instance->highlight = $productFields['kim_azon'];
+        $instance->img = $productFields['reszletek'];
+        $instance->description = $productFields['kep'];
+        $name = $_POST["nev"];
+        $category = $_POST["kat_azon"];
+        $package = $_POST["kisz_azon"];
+        $weight = $_POST["suly"];
+        $price = $_POST["egysegar"];
+        $recQ = $_POST["min_rend"];
+        $minO = $_POST["min_keszlet"];
+        $highlight = $_POST["kim_azon"];
         $action = $_POST["action"];
         //$details = $_POST["details"];
-        $details = str_replace(PHP_EOL,"<br>",$_POST["details"]);
+        $details = str_replace(PHP_EOL,"<br>",$_POST["reszletek"]);
         //$img = $_POST["file"];
-
+*/
 
         foreach ($_POST as $key => $value) {
             echo $value . '<br/>';
         }
+
+
 
         $img_name       = $_FILES['file']['name'];
         $temp_name  = $_FILES['file']['tmp_name'];
@@ -51,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 /*if(move_uploaded_file($temp_name, $location.$img_name)){
                     echo 'uploaded';
                 }*/
+
                 $temp = explode(".", $_FILES["file"]["name"]);
                 $newfilename = round(microtime(true)) . '.' . end($temp);
                 move_uploaded_file($_FILES["file"]["tmp_name"], "images/Product/" . $newfilename);
@@ -60,7 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
        //kontruktor $id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
 
-        $product = new Product(null, $name,$package,$category,$weight,$price,$minO,$recQ,$action,$highlight,$newfilename,$details);
+        //$product = Product::createProduct(null, $name,$package,$category,$weight,$price,$minO,$recQ,$action,$highlight,$newfilename,$details);
+
+        $product = Product::createProductByArray($_POST);
+
+        die("product: ".$product);
 
         $leader = new UserAsLeader($_SESSION["id"],$_SESSION["email"],$_SESSION["password"]);
         $message = $leader->productAddStore($product);

@@ -3,7 +3,7 @@
 
 a {
     color: white;
-    font-family: 'Lobster', cursive;
+
 }
 
 a:link {
@@ -51,13 +51,21 @@ body {
     border-radius: 30px;
     padding: 10px;
     border: 3px solid white;
+
 }
 
 .object2 {
     position: absolute;
     right: 0;
-    width: 250px;
+    width: 200px;
     height: 100px;
+    font-family: 'Lobster', cursive;
+    color: white;
+    font-size: 16px;
+}
+
+.object2 span{
+    display: block;
 }
 
 .object2 a {
@@ -72,18 +80,7 @@ body {
     height: 200px;
 }
 
-.objectSearch {
-    float: left;
-    width: auto;
-    margin-left: 10px;
-    font-family: 'Roboto Condensed', sans-serif;
-    color: #F39EB1;
-    font-size: larger;
-}
 
-.objectSearch input, .objectSearch select{
-    margin: 0 10px 0 10px;
-}
 
 #mainContainer {
     position: relative;

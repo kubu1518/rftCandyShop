@@ -24,5 +24,8 @@
        <div class="info">Sikeres Regisztráció! Itt tudsz bejelentkezni: <a href="LoginForm.php">Belépés</a></div>
     </div>
 </div>
+<footer>
+    Copyright © DE-PTI
+</footer>
 </body>
 </html>

@@ -8,7 +8,7 @@
 ?>
 <!doctype html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Candy Shop - Bejelentkezés</title>
     <meta name="description" content="Candy Shop - Bejelentkezés">
     <meta name="author" content="Rosti">
@@ -49,7 +49,7 @@
             }else{
                 $url = $_SERVER['HTTP_REFERER'];
                 $redirect = str_replace(basename($_SERVER['PHP_SELF']),substr($back,2),$url);
-                header("Location: $redirect");
+                header("Location: $redirect"."?login=on");
             }
 
         }
@@ -78,5 +78,8 @@ _LOGIN_FORM;
 
 </div>
 </div>
+<footer>
+    Copyright © DE-PTI
+</footer>
 </body>
 </html>

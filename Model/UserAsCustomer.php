@@ -109,7 +109,7 @@ class UserAsCustomer extends User
     {//void
         $conn = new ConnectionHandler();
         //bejárjuk a kosárban lévő termékek listáját.
-        foreach ($this->getCart()->getItems() as $value) {
+        foreach ($this->cart->getProducts() as $value) {
 
             $quantity = $this->cart->valueOfQuantity($value->getName());
 
@@ -121,7 +121,7 @@ class UserAsCustomer extends User
 
             if ($count === 1) {
                 //amelyek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
-                $stmt = $conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
+                $conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
                     array("u_id", "termek_id"), array($this->getId(), $value->getId()));
 
             } else {
@@ -193,5 +193,21 @@ class UserAsCustomer extends User
      */
     public function loadOrders(){
 
+    }
+
+    /**
+     * Van e egyáltalán a kosár táblában az adott felhasználóhoz tartozó sor?
+     * @return boolean
+     */
+    public function hasACart(){
+        $conn = new ConnectionHandler();
+        $stmt = $conn->preparedQuery("SELECT * FROM kosar WHERE u_id = ?",array($this->getId()));
+        if($stmt->fetch(PDO::FETCH_BOTH)){
+            $conn->close();
+            return true;
+        }else{
+            $conn->close();
+            return false;
+        }
     }
 }

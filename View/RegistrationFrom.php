@@ -81,5 +81,8 @@ _LOGIN_FORM;
 
     </div>
 </div>
+<footer>
+    Copyright © DE-PTI
+</footer>
 </body>
 </html>

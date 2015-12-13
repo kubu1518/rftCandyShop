@@ -8,7 +8,7 @@
 ?>
 <!doctype html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Candy Shop - Bejelentkezés</title>
     <meta name="description" content="Candy Shop - Bejelentkezés">
     <meta name="author" content="Rosti">
@@ -78,5 +78,8 @@ _LOGIN_FORM;
 
 </div>
 </div>
+<footer>
+    Copyright © DE-PTI
+</footer>
 </body>
 </html>

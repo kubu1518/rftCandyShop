@@ -25,36 +25,40 @@ class ListingUtilities
      * @param int $categ_id
      * @return array(Product) $products_array
      */
-    public function listingProductByCategoryId($categ_id)
-    {
+//    public function listingProductByCategoryId($categ_id)
+//    {
+//
+//        $result = array();
+//
+//        $stmt = $this->conn->preparedCountQuery("SELECT * FROM Termekek WHERE kat_azon = ?", array($categ_id));
+//
+//        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+//            /*
+//                        $category = new Category($rowProduct[3]);
+//            //        $category->setName($category->selectName($this->getId()));
+//                        //átköltöztetve a konstrukorba, ha nem szép dolog, akkor hazsnálom ezt itt
+//                        $pack = new Package($rowProduct[2]);
+//            //        $pack->setName($pack->selectName($this->getId()));
+//                        $highlight = new Highlight($rowProduct[9]);
+//            //        $highlight->setName($highlight->selectName($highlight->getId()));
+//            */
+//            //termék összeállítása
+//
+//            $product = new Product($row[0], $row[1], new Package($row[2]), new Category($row[3]), $row[4], $row[5],
+//                $row[6], $row[7], $row[8], new Highlight($row[9]), $row[10], $row[11]);
+//
+//            //Az eladható darabok össze számolása, termékekként.
+//            $product->setSellAble($this->countSellAbleQuantity($row[0]));
+//
+//            array_push(addProduct($product, $result));
+//        }
+//
+//
+//        return $result;
+//    }
 
-        $result = array();
-
-        $stmt = $this->conn->preparedCountQuery("SELECT * FROM Termekek WHERE kat_azon = ?", array($categ_id));
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-            /*
-                        $category = new Category($rowProduct[3]);
-            //        $category->setName($category->selectName($this->getId()));
-                        //átköltöztetve a konstrukorba, ha nem szép dolog, akkor hazsnálom ezt itt
-                        $pack = new Package($rowProduct[2]);
-            //        $pack->setName($pack->selectName($this->getId()));
-                        $highlight = new Highlight($rowProduct[9]);
-            //        $highlight->setName($highlight->selectName($highlight->getId()));
-            */
-            //termék összeállítása
-
-            $product = new Product($row[0], $row[1], new Package($row[2]), new Category($row[3]), $row[4], $row[5],
-                $row[6], $row[7], $row[8], new Highlight($row[9]), $row[10], $row[11]);
-
-            //Az eladható darabok össze számolása, termékekként.
-            $product->setSellAble($this->countSellAbleQuantity($row[0]));
-
-            array_push(addProduct($product, $result));
-        }
-
-
-        return $result;
+    public function listingProductByCategoryId($categ_id){
+        return $this->listingProducts("",$categ_id);
     }
 
     /**
@@ -65,26 +69,43 @@ class ListingUtilities
      *
      * @return Product array
      */
-    public
-    function listingProducts($name, $categ_id)
+//    public
+//    function listingProducts($name, $categ_id)
+//    {
+//        $result = array();
+//        $stmt = NULL;
+//
+//        if ($categ_id === 0) {
+//            $stmt = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE nev=?", array($name));
+//
+//        } else {
+//            $stmt = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE nev=? AND kat_azon=?", array($name, $categ_id));
+//
+//        }
+//
+//        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+//            array_push(addProduct(new Product($row[0], $row[1], new Package($row[2]), new Category($row[3]), $row[4], $row[5],
+//                $row[6], $row[7], $row[8], new Highlight($row[9]), $row[10], $row[11]), $row[2]), $products);
+//        }
+//
+//        return $result;
+//    }
+
+
+    public function listingProducts($name, $categ_id)
     {
-        $result = array();
-        $stmt = NULL;
-
-        if ($categ_id === 0) {
-            $stmt = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE nev=?", array($name));
-
-        } else {
-            $stmt = $this->conn->preparedQuery("SELECT * FROM Termekek WHERE nev=? AND kat_azon=?", array($name, $categ_id));
-
-        }
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-            array_push(addProduct(new Product($row[0], $row[1], new Package($row[2]), new Category($row[3]), $row[4], $row[5],
-                $row[6], $row[7], $row[8], new Highlight($row[9]), $row[10], $row[11]), $row[2]), $products);
-        }
-
-        return $result;
+        $searchEntitiy = $name == "" ? "%" : "%" . $name . "%";
+        $sql = <<<SELECT
+                SELECT t_azon, nev, kat_nev, kisz_nev, suly, egysegar,
+	            kim_nev, akcio, reszletek, kep FROM
+                ((((raktar r JOIN termekek t ON r.termek_id = t.t_azon)
+                 JOIN statusz s ON r.stat_id = s.stat_id)
+                 JOIN kategoriak kat ON t.kat_azon = kat.kat_azon)
+                 JOIN kiszerelesek kisz ON t.kat_azon = kisz.kisz_azon)
+                 JOIN kiemelesek kim ON t.kat_azon = kim.kim_azon
+                 WHERE nev LIKE ? AND s.stat_nev = ? AND t.kat_azon = ?
+SELECT;
+        return $this->conn->preparedQuery($sql,array($searchEntitiy,"normal",$categ_id))->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

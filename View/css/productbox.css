@@ -1,0 +1,65 @@
+
+.productbox {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+    width: 300px;
+}
+.productbox button {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 15px;
+    background: #F39EB1;
+    color: #fff;
+    padding: 3px 13px;
+    cursor: pointer;
+    margin-top: 10px
+}
+.productbox button:hover {
+    background: #d492c5;
+}
+
+.productbox button .icon-cart {
+    margin-left: 5px;
+    font-size: 20px
+}
+.productbox p {
+    font-weight: bold;
+}
+.productbox h2 {
+    margin: 10px 0;
+    font-weight: normal
+}
+.productbox .image {
+    background: #fff;
+    padding: 10px;
+    position: relative
+}
+.productbox .image span {
+    position: absolute
+}
+.productbox .image .icon-star {
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: lightgrey;
+    display: none;
+    cursor: pointer
+}
+.productbox .image:hover .icon-star,
+.icon-star.active {
+    display: inline-block
+}
+.productbox .icon-star.active {
+    color: orange;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2)
+}
+.productbox .image .sale {
+    background: green;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 3px 10px;
+    bottom: 10px;
+    right: 10px
+}

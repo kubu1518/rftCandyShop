@@ -2,35 +2,36 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/UserAsCustomer.php");
 
-
-if (!isset($_GET["login"])) {
+session_start();
+if (!isset($_SESSION['actUser'])) {
     $autControl = <<<AUTH
     <a href='RegistrationFrom.php'>Regisztráció</a>
-    <a href='LoginForm.php'>Bejelentkezés</a>"
+    <a href='LoginForm.php'>Bejelentkezés</a>
 AUTH;
 } else {
-    session_start();
-    if (isset($_SESSION['actUser'])) {
         $user = unserialize($_SESSION['actUser']);
-
+        $email = $user->getEmail();
+        $cartSize = $user->getCart()->getSize();
         $autControl = <<<AUTH
-    <span>$user->getEmail()</span>
+    <span>$email</span>
+    <span id='cart'>Kosár($cartSize)</span>
     <span id='logout'>Kijelentkezés</span>
 AUTH;
-    } else die(utf8_decode("Nem létezik munkamenet"));
+    }
 
-}
+
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="hu">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
     <title>Candy Shop - Kezdőoldal</title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-
+    <link rel="stylesheet" type="text/css" href="css/productbox.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/Customer.js"></script>
 </head>
 
 <body>
@@ -56,7 +57,7 @@ AUTH;
                 $lu = new ListingUtilities();
                 $categories = $lu->listingProductsGroups();
                 foreach ($categories as $k => $v) {
-                    echo "<li id='$k'>$v</li>";
+                    echo "<li id='$k' class='category'>$v</li>";
                 }
                 ?>
                 <!--<li><button type="button" class=navbutton>Rendeléseim megtekintése</button></li>-->
@@ -72,11 +73,14 @@ AUTH;
                 }
                 ?>
             </select>
-            <input type="submit" id="submitButton" value="Keresés"/>
+            <input type="button" id="search" value="Keresés"/>
         </div>
         <div id="alterablecontent">
         </div>
     </div>
 </div>
+<footer>
+    Copyright © DE-PTI
+</footer>
 </body>
 </html>

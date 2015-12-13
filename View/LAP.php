@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION["right_level"] != 1){
+if ($_SESSION["right_level"] != 1) {
     echo '<a href="index.php">Kezdő oldal</a>';
     session_destroy();
     die("Nincs ehhez jogosultságod!");
@@ -14,38 +14,38 @@ if($_SESSION["right_level"] != 1){
  */
 
 //include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
-include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/Product.class.php";
-include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsLeader.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/Product.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsLeader.php";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['submit'])) {
 
-/*
-        $instance->id = $productFields['t_azon'];
-        $instance->name = $productFields['nev'];
-        $instance->category = $productFields['kat_azon'];
-        $instance->package = $productFields['kisz_azon'];
-        $instance->weight = $productFields['suly'];
-        $instance->price = $productFields['egysegar'];
-        $instance->min_order = $productFields['min_rend'];
-        $instance->min_stock = $productFields['min_keszlet'];
-        $instance->discount = $productFields['akcio'];
-        $instance->highlight = $productFields['kim_azon'];
-        $instance->img = $productFields['reszletek'];
-        $instance->description = $productFields['kep'];
-        $name = $_POST["nev"];
-        $category = $_POST["kat_azon"];
-        $package = $_POST["kisz_azon"];
-        $weight = $_POST["suly"];
-        $price = $_POST["egysegar"];
-        $recQ = $_POST["min_rend"];
-        $minO = $_POST["min_keszlet"];
-        $highlight = $_POST["kim_azon"];
-        $action = $_POST["action"];
-        //$details = $_POST["details"];
-        $details = str_replace(PHP_EOL,"<br>",$_POST["reszletek"]);
-        //$img = $_POST["file"];
-*/
+        /*
+                $instance->id = $productFields['t_azon'];
+                $instance->name = $productFields['nev'];
+                $instance->category = $productFields['kat_azon'];
+                $instance->package = $productFields['kisz_azon'];
+                $instance->weight = $productFields['suly'];
+                $instance->price = $productFields['egysegar'];
+                $instance->min_order = $productFields['min_rend'];
+                $instance->min_stock = $productFields['min_keszlet'];
+                $instance->discount = $productFields['akcio'];
+                $instance->highlight = $productFields['kim_azon'];
+                $instance->img = $productFields['reszletek'];
+                $instance->description = $productFields['kep'];
+                $name = $_POST["nev"];
+                $category = $_POST["kat_azon"];
+                $package = $_POST["kisz_azon"];
+                $weight = $_POST["suly"];
+                $price = $_POST["egysegar"];
+                $recQ = $_POST["min_rend"];
+                $minO = $_POST["min_keszlet"];
+                $highlight = $_POST["kim_azon"];
+                $action = $_POST["action"];
+                //$details = $_POST["details"];
+                $details = str_replace(PHP_EOL,"<br>",$_POST["reszletek"]);
+                //$img = $_POST["file"];
+        */
 
         foreach ($_POST as $key => $value) {
             echo $value . '<br/>';
@@ -53,67 +53,65 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 
-        //$img_name       = $_FILES['kep']['name'];
-        //$temp_name  = $_FILES['kep']['tmp_name'];
-        //$img_name = substr_replace(" ","_",$name);
-        //$img_name.=".jpg";
-        //$newfilename = "";
         $newfilename = null;
-        if(isset($name)){
-            if(!empty($name)){
 
-                $location = 'images/product/';
-                /*if(move_uploaded_file($temp_name, $location.$img_name)){
-                    echo 'uploaded';
-                }*/
+        $location = 'images/product/';
+        /*if(move_uploaded_file($temp_name, $location.$img_name)){
+            echo 'uploaded';
+        }*/
 
-                $temp = explode(".", $_FILES["file"]["name"]);
-                $newfilename = round(microtime(true)) . '.' . end($temp);
-                move_uploaded_file($_FILES["file"]["tmp_name"], "images/Product/" . $newfilename);
-            }
-        }  else {
-            echo 'please uploaded';
-        }
-       //kontruktor $id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
+        $temp = explode(".", $_FILES["kep"]["name"]);
+        $newfilename = round(microtime(true)) . '.' . end($temp);
+        move_uploaded_file($_FILES["kep"]["tmp_name"], "images/product/" . $newfilename);
 
-        //$product = Product::createProduct(null, $name,$package,$category,$weight,$price,$minO,$recQ,$action,$highlight,$newfilename,$details);
 
         $_POST["kep"] = $newfilename;
         $_POST["t_azon"] = null;
 
         $product = Product::createProductByArray($_POST);
 
-        die("product: ".$product);
+        ///die("product: ".$product);
 
-        $leader = new UserAsLeader($_SESSION["id"],$_SESSION["email"],$_SESSION["password"]);
+        $leader = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+
         $message = $leader->productAddStore($product);
 
         $_SESSION["message"] = $message;
 
+
         header("Location: Leader_Add_Product.php");
+    }
+
+    //kontruktor $id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
+
+    //$product = Product::createProduct(null, $name,$package,$category,$weight,$price,$minO,$recQ,$action,$highlight,$newfilename,$details);
+
+
+
 
 //echo $product."<br>";
 
-/*
-        $conn = new ConnectionHandler();
+    /*
+            $conn = new ConnectionHandler();
 
-        $conn->preparedInsert("termekek",
-            array("nev", "kat_azon", "kisz_azon", "suly", "egysegar", "min_keszlet", "min_rend", "kim_azon", "akcio", "reszletek"),
-            array($name, $categ, $package, $weight, $price, $recQ,$minO,$highlight,$action,$details));
-/*
-        $stmt = $conn->preparedQuery("SELECT t_azon FROM termekek WHERE nev=?",array("$name"));
-        $id = -1;
-        while($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)){
-            $id = $row[0];
-        }
+            $conn->preparedInsert("termekek",
+                array("nev", "kat_azon", "kisz_azon", "suly", "egysegar", "min_keszlet", "min_rend", "kim_azon", "akcio", "reszletek"),
+                array($name, $categ, $package, $weight, $price, $recQ,$minO,$highlight,$action,$details));
+    /*
+            $stmt = $conn->preparedQuery("SELECT t_azon FROM termekek WHERE nev=?",array("$name"));
+            $id = -1;
+            while($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)){
+                $id = $row[0];
+            }
 
-        $name = $id;
+            $name = $id;
 
-*/
+    */
 
 
-    }}
-        //do something
+
+}
+//do something
 /*
         echo $name."_".$price;
 

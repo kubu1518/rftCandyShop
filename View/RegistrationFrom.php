@@ -14,7 +14,7 @@
     <div class="head object1"><img src="images/cooltext151692606346986.png" name="logo" width="525" height="99"/></div>
     <div class="objectAudio">
         <audio controls>
-            <source src="/CandyShop/Model/medias/candy_shop.mp3" type="audio/ogg">
+            <source src="rft/CandyShop/Model/medias/candy_shop.mp3" type="audio/ogg">
         </audio>
     </div>
 </div>

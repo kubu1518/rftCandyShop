@@ -16,7 +16,7 @@ AUTH;
         $cartSize = $user->getCart()->getSize();
         $autControl = <<<AUTH
     <span>$email</span>
-    <span id='cart'>Kosár($cartSize)</span>
+    <span id='cart'><a href="Cart.php">Kosár($cartSize)</a></span>
     <span id='logout'>Kijelentkezés</span>
 AUTH;
     }
@@ -41,7 +41,7 @@ AUTH;
     <div class="head object1"><img src="images/cooltext151692606346986.png" name="logo" width="525" height="99"/></div>
     <div class="objectAudio">
         <audio controls>
-            <source src="/CandyShop/Model/medias/candy_shop.mp3" type="audio/ogg">
+            <source src="/rftCandyShop/Model/medias/candy_shop.mp3" type="audio/ogg">
         </audio>
     </div>
     <div class="head object2">

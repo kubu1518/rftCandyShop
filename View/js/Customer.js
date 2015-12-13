@@ -11,7 +11,7 @@ $(document).ready(function () {
     $("#search").click(function () {
         var cat = $("#searchCategory option:selected").val();
         var name = $("#searchName").val();
-        $.get("../../Candyshop/Controll/ControlSearch.php",
+        $.get("../../rftCandyshop/Controll/ControlSearch.php",
             {
                 sName  : name,
                 sCategory : cat
@@ -24,7 +24,7 @@ $(document).ready(function () {
         var id = $(this).attr("id");
         $("#searchName").val("");
         console.log(id);
-        $("#searchCategory option:selected").val();
+        $("#searchCategory").val(id);
         $("#search").trigger("click")
     })
 

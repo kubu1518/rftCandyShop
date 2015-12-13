@@ -98,14 +98,12 @@ class ListingUtilities
         $sql = <<<SELECT
                 SELECT t_azon, nev, kat_nev, kisz_nev, suly, egysegar,
 	            kim_nev, akcio, reszletek, kep FROM
-                ((((raktar r JOIN termekek t ON r.termek_id = t.t_azon)
-                 JOIN statusz s ON r.stat_id = s.stat_id)
-                 JOIN kategoriak kat ON t.kat_azon = kat.kat_azon)
+                ((termekek t JOIN kategoriak kat ON t.kat_azon = kat.kat_azon)
                  JOIN kiszerelesek kisz ON t.kat_azon = kisz.kisz_azon)
                  JOIN kiemelesek kim ON t.kat_azon = kim.kim_azon
-                 WHERE nev LIKE ? AND s.stat_nev = ? AND t.kat_azon = ?
+                 WHERE nev LIKE ? AND t.kat_azon = ?
 SELECT;
-        return $this->conn->preparedQuery($sql,array($searchEntitiy,"normal",$categ_id))->fetchAll(PDO::FETCH_ASSOC);
+        return $this->conn->preparedQuery($sql,array($searchEntitiy,$categ_id))->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

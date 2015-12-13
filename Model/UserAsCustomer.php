@@ -4,6 +4,7 @@ require_once("User.class.php");
 require_once("Cart.class.php");
 require_once("Product.class.php");
 require_once("Order.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php");
 
 /**
  * Created by PhpStorm.

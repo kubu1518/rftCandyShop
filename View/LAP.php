@@ -14,8 +14,8 @@ if($_SESSION["right_level"] != 1){
  */
 
 //include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
-include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/Product.class.php";
-include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/UserAsLeader.php";
+include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/Product.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsLeader.php";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['submit'])) {

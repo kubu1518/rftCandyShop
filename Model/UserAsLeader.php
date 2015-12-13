@@ -1,7 +1,7 @@
 <?php
 
 require_once("User.class.php");
-include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 
 /**
  * Created by PhpStorm.

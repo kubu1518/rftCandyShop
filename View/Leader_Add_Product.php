@@ -12,13 +12,8 @@ $_SESSION["message"] = "";
  * Time: 9:43 PM
  */
 //include "Header.html";
+require_once $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php";
 
-if($_SERVER['DOCUMENT_ROOT'] == "C:/xampp/htdocs") {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
-}
-else {
-   require_once $_SERVER['DOCUMENT_ROOT'] . "/Model/database/ConnectionHandler.class.php";
-}
 
 
 

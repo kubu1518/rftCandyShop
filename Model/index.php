@@ -10,7 +10,7 @@ Ez a kipróbáló index fájlom, ne bántsátok. :D
 <body>
 <?php
 
-include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 include 'Product.class.php';
 include 'Cart.class.php';
 include 'Package.class.php';

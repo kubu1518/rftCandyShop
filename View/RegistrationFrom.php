@@ -29,7 +29,7 @@
          * Time: 17:47
          */
 
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/Model/database/Registration.class.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . 'rftCandyShop/Model/database/Registration.class.php');
 
         $email = "";
 

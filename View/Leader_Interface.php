@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include $_SERVER['DOCUMENT_ROOT'] . "/git/rftCandyShop/Model/database/ConnectionHandler.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php";
 
 /**
  * @param $datas

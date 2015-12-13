@@ -1,6 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/ListingUtilities.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Model/UserAsCustomer.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/ListingUtilities.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsCustomer.php");
+
+
 
 session_start();
 if (!isset($_SESSION['actUser'])) {

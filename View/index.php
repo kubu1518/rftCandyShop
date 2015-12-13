@@ -32,6 +32,7 @@ AUTH;
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/productbox.css">
+    <link rel="stylesheet" type="text/css" href="css/Cart.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/Customer.js"></script>
 </head>

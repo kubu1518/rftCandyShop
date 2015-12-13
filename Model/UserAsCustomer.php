@@ -110,23 +110,26 @@ class UserAsCustomer extends User
     {//void
         $conn = new ConnectionHandler();
         //bejárjuk a kosárban lévő termékek listáját.
-        foreach ($this->cart->getProducts() as $value) {
+        foreach ($this->getCart()->getProducts() as $value) {
+            echo $value->getName();
 
-            $quantity = $this->cart->valueOfQuantity($value->getName());
+            $quantity = $this->getCart()->valueOfQuantity($value);
 
             //ami benne van, arra mindre megy az update.
-            $count = (
-            $conn->preparedCountQuery("SELECT count(*) FROM Kosar WHERE u_id=? AND termek_id=?",
-                array($this->getId(), $value->getId()))
-            );
+            $count = $conn->preparedCountQuery("SELECT count(*) FROM kosar WHERE u_id = ? AND termek_id = ?",
+                array($this->getId(), $value->getId()));
 
-            if ($count === 1) {
+
+
+
+            if ($count[0] === 1) {
                 //amelyek szerepelnek a Kosar táblában, updatet kapnak a mennyiseg oszlopra.
                 $conn->preparedUpdate("Kosar", array("mennyiseg"), array($quantity),
-                    array("u_id", "termek_id"), array($this->getId(), $value->getId()));
+                    "u_id = ? and termek_id = ?", array($this->getId(), $value->getId()));
 
             } else {
 //amelek eddig nem voltak a Kosar táblában beszúrásra kerülnek.
+
                 $conn->preparedInsert("Kosar", array("u_id", "termek_id", "mennyiseg"), array($this->getId(), $value->getId(), $quantity));
             }
         }
@@ -179,7 +182,7 @@ class UserAsCustomer extends User
             //a termék adatok összegűjtése a termék_id alapján (row[termek_id])
             $stmtProduct = $conn->preparedQuery("SELECT * FROM Termekek WHERE t_azon=?", array($row["termek_id"]));
             while ($rowProduct = $stmtProduct->fetch(PDO::FETCH_ASSOC)) {
-                  $products[] = new Product($rowProduct);
+                  $products[$rowProduct['t_azon']] = Product::createProductByArray($rowProduct);
                   /*Csak t_azonnal indexelem mert ha esetleg lesz szükség még másra is a termékből, nem csak a nevére, mikor
                   a kosárba kiírjuk, akkor ott legyen minden*/
                   $quantities[$rowProduct['t_azon']] = $row['mennyiseg'];

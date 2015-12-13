@@ -13,6 +13,7 @@ session_start();
 $user = unserialize($_SESSION['actUser']);
 
 $logIn = new Login();
+var_dump($user->getCart()->getProducts());
 $user->saveCart();
 $logIn->logOut();
 

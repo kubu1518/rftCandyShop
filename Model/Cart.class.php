@@ -1,6 +1,6 @@
 <?php
 require_once('Product.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php");
 
 /**
  * @author ngg;

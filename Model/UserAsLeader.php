@@ -42,7 +42,7 @@ class UserAsLeader extends User
                     array("nev", "kat_azon", "kisz_azon", "suly", "egysegar", "min_keszlet",
                         "min_rend", "kim_azon", "akcio", "reszletek", "kep"),
                     array($product->getName(), $product->getCategory(), $product->getPackage(), $product->getWeight(),
-                        $product->getPrice(), $product->getMinOrder(), $product->getMinStock(), $product->getHighlight()
+                        $product->getPrice(), $product->getMinStock(), $product->getMinOrder(), $product->getHighlight()
                     , $product->getDiscount(), $product->getDescription(), $product->getImg()));
 
                 //die("Sql után!");
@@ -93,9 +93,11 @@ class UserAsLeader extends User
     public function productRemoveFromStore($product_id)
     {//void
         try {
-            $this->conn->preparedUpdate("raktar", array("stat_id"), array("0"), array("stat_id"), array($product_id));
+
+            $this->conn->preparedUpdate("raktar", array("stat_id"), array("0"), "termek_id = ?", array($product_id));
+            die("update után");
         } catch (Exception $e) {
-            return "Hiba, nem sikerült a törlés!";
+            return "Hiba, nem sikerült a törlés/ státusz átállítás!";
         }
 
         return "Sikeres termék törlés!";
@@ -103,8 +105,7 @@ class UserAsLeader extends User
     }
 
     /**
-     * Törlésre jelölt termék sátuszát, kiemelését változtatja meg nem árusíthatóvá.
-     * Kódja az adat táblában a nulla -> 0.
+     * Megváltoztatja a termék árát.
      *
      * @param int $product_id
      * @param int $price
@@ -113,7 +114,7 @@ class UserAsLeader extends User
     public function productEditPrice($product_id, $price)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("price"), array($price), array("t_azon"), array($product_id));
+            $this->conn->preparedUpdate("termekek", array("egysegar"), array($price), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az ármódosítás!";
         }
@@ -130,8 +131,10 @@ class UserAsLeader extends User
      */
     public function productEditRecommendQuantity($product_id, $min_stock)
     {
+        echo "pdid: ". $product_id." __ stock: ". $min_stock;
+
         try {
-            $this->conn->preparedUpdate("termekek", array("min_keszlet"), array($min_stock), array("t_azon"), array($product_id));
+            $this->conn->preparedUpdate("termekek", array("min_keszlet"), array($min_stock), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az raktáron tartandó mennyiség módosítása!";
         }
@@ -150,7 +153,7 @@ class UserAsLeader extends User
     public function productMinimalOrderQuantity($product_id, $min_quantity)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("min_rend"), array($min_quantity), array("t_azon"), array($product_id));
+            $this->conn->preparedUpdate("termekek", array("min_rend"), array($min_quantity), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az minimum rendelhető mennyiség módosítása!";
         }
@@ -168,7 +171,19 @@ class UserAsLeader extends User
     public function productEditHighlighting($product_id, $hl_id)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), array("t_azon"), array($product_id));
+            $this->conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), "t_azon = ?" , array($product_id));
+        } catch (Exception $e) {
+            return "Hiba, nem sikerült az kiemelés módosítása!";
+        }
+
+        return "Sikeres kiemelés módosítás!";
+    }
+
+
+    public function productEditDiscount($product_id, $hl_id)
+    {
+        try {
+            $this->conn->preparedUpdate("termekek", array("akcio"), array($hl_id), "t_azon = ?" , array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az kiemelés módosítása!";
         }

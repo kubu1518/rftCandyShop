@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-include $_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsLeader.php";
 
 /**
  * @param $datas
@@ -43,43 +44,68 @@ $result = "";
 }
 */
 
-function deleteP($id){
+function deleteP($id, $nValue)
+{
 
-    echo "delete: " . $id."<br>";
-    $user = new UserAsLeader($_SESSION["id"],$_SESSION["email"],$_SESSION["password"]);
+    echo "delete: " . $id . "<br>";
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
 
     echo $user->productRemoveFromStore($id);
 }
 
-function editPrice($id){
+function editPrice($id, $nValue)
+{
 
-    echo "editPrice: " . $id."<br>";
+    echo "editPrice: " . $id . "<br>";
 
-    $user = new UserAsLeader($_SESSION["id"],$_SESSION["email"],$_SESSION["password"]);
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
 
-    $user->productEditPrice($id,$pice); //elfelejtettem ,h kellenek a második paraméterek is, nah majd később xD
+    $user->productEditPrice($id, $nValue); //elfelejtettem ,h kellenek a második paraméterek is, nah majd később xD
 }
 
-function editStock($id){
+function editStock($id, $nValue)
+{
 
-    echo "editStock: " . $id."<br>";
+    echo "editStock: " . $id . "<br>";
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+
+    $user->productEditRecommendQuantity($id, $nValue);
 }
 
-function editMin($id){
+function editMin($id, $nValue)
+{
 
-    echo "editMin: " . $id."<br>";
+    echo "editMin: " . $id . "<br>";
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+    $user->productMinimalOrderQuantity($id, $nValue);
 }
-function editHighlight($id){
 
-    echo "editHighlight: " . $id."<br>";
+function editHighlight($id, $nValue)
+{
+
+    echo "editHighlight: " . $id . " " . $nValue . ".<br>";
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+    $user->productEditHighlighting($id, $nValue);
+}
+
+function editDiscount($id, $nValue)
+{
+
+    echo "editDiscount: " . $id . " " . $nValue . ".<br>";
+
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+    $user->productEditDiscount($id, $nValue);
 }
 
 $method = $_POST['callFunc'];
 $id = $_POST['id'];
-
+$nValue = null;
+if (isset($_POST['nValue'])) {
+    $nValue = $_POST['nValue'];
+}
 //echo func1($_POST['callFunc1']);
 
 //meghívódik adott metódus a név alapján pl: deleteP a metódus, ekkor a deleteP(paraméter) hívódik meg.
-$method($id);
+$method($id, $nValue);
 
 ?>

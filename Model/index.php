@@ -10,7 +10,8 @@ Ez a kipróbáló index fájlom, ne bántsátok. :D
 <body>
 <?php
 
-include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
+
 include 'Product.class.php';
 include 'Cart.class.php';
 include 'Package.class.php';
@@ -24,6 +25,7 @@ $category = array(new Category(1, "háztartási eszközök"));
 $highlight = array(new Highlight(0, ""), new Highlight(1, "Yuhúúú, micsoda akció!"));
 
 //    $id, $name, $package, $category, $weight, $price, $min_order, $min_stock, $discount, $highlight, $img, $description)
+/*
 $p = array(
     new Product(1, "TeleV", $package[0], $category[0], "5kg", 100, 1, 20, "10%", $highlight[0], "img/tv01.jpg", "This Tv is realy ok!"),
     new Product(2, "Turmixoló", $package[0], $category[0], "1.5kg", 1000, 1, 2, "30%", $highlight[1], "img/turmix01.jpg", "brrr Turmix"),
@@ -31,8 +33,9 @@ $p = array(
     new Product(4, "Mosógép", $package[0], $category[0], "30kg", 100000, 1, 10, "30%", $highlight[0], "img/por01.jpg", "brrr Mosógép"),
     new Product(5, "Mixer", $package[0], $category[0], "1.5kg", 10, 2, 12, "1%", $highlight[1], "img/mix01.jpg", "brrr Mixer")
 );
-
+/*
 $c = new Cart();
+
 
 for ($i = 0; $i < sizeof($p); $i++) {
 
@@ -159,6 +162,7 @@ echo $d_diff->format("%R");
 echo $d_diff->days;
 
 //echo "diff: ". date_diff( $w, $d , FALSE) ."<br>";
+
 
 
 

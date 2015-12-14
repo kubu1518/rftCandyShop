@@ -131,7 +131,7 @@ class UserAsLeader extends User
      */
     public function productEditRecommendQuantity($product_id, $min_stock)
     {
-        echo "pdid: ". $product_id." __ stock: ". $min_stock;
+        echo "pdid: " . $product_id . " __ stock: " . $min_stock;
 
         try {
             $this->conn->preparedUpdate("termekek", array("min_keszlet"), array($min_stock), "t_azon = ?", array($product_id));
@@ -171,7 +171,7 @@ class UserAsLeader extends User
     public function productEditHighlighting($product_id, $hl_id)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), "t_azon = ?" , array($product_id));
+            $this->conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az kiemelés módosítása!";
         }
@@ -183,7 +183,7 @@ class UserAsLeader extends User
     public function productEditDiscount($product_id, $hl_id)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("akcio"), array($hl_id), "t_azon = ?" , array($product_id));
+            $this->conn->preparedUpdate("termekek", array("akcio"), array($hl_id), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az kiemelés módosítása!";
         }
@@ -202,43 +202,51 @@ class UserAsLeader extends User
     public function productSoldStatistic($product_id, $start_date, $end_date)
     {
 
+
+       // echo $start_date . "---" . $end_date . "<br>";
+
+
+        /*ezzel jó sql-ben
+
+        SELECT SUM(rendeles_reszletei.mennyiseg)
+            FROM megrendelesek INNER JOIN rendeles_reszletei
+                ON megrendelesek.rend_szam=rendeles_reszletei.rend_szam
+                    AND megrendelesek.rend_datum >= "2015-12-01 00:00:00"
+                    AND megrendelesek.rend_datum <= "2015-12-13 23:59:59"
+                    AND rendeles_reszletei.termek_id = 20
+
+        -----------------------------------------------------------------------------------------------------
+            SELECT rendeles_reszletei.rend_szam,rendeles_reszletei.termek_id,rendeles_reszletei.mennyiseg,
+            SUM(rendeles_reszletei.mennyiseg),  megrendelesek.rend_datum FROM megrendelesek
+            INNER JOIN rendeles_reszletei ON megrendelesek.rend_szam=rendeles_reszletei.rend_szam
+            AND megrendelesek.rend_datum >= "2015-12-01 00:00:00"
+            AND megrendelesek.rend_datum <= "2015-12-13 23:59:59"
+            AND rendeles_reszletei.termek_id = 20
+            GROUP BY rendeles_reszletei.termek_id ORDER BY rendeles_reszletei.termek_id
+        */
         $product_quantity = array();
 
-        //amennyiben nincs megadva a intervallum vége, a jelenlegi dátum kerül beállításra.
-        if ($end_date == "" || $end_date == null) {
-            $end_date = date("Y-m-d");
+
+        $stmt = $this->conn->preparedQuery(
+            "SELECT SUM(rendeles_reszletei.mennyiseg)
+            FROM megrendelesek INNER JOIN rendeles_reszletei
+                ON megrendelesek.rend_szam=rendeles_reszletei.rend_szam
+                    AND megrendelesek.statusz_id = 3
+                    AND megrendelesek.rend_datum >= ?
+                    AND megrendelesek.rend_datum <= ?
+                    AND rendeles_reszletei.termek_id = ?", array($start_date, $end_date, $product_id)
+        );
+
+        $row = $stmt->fetch(PDO::FETCH_NUM);
+
+       // var_dump($row);
+
+       // echo 'q: ' . $row[0];
+        if ($row[0] == null) {
+            return 0;
+        } else {
+            return $row[0];
         }
-
-
-        $orders = array();
-
-        $stmt = $this->conn->preparedQuery("SELECT * FROM megrendelesek WHERE rend_datum >= ? AND rend_datum <= ?", array($start_date, $end_date));
-        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-            array_push($row["rend_szam"], $orders);
-        }
-
-        $orderedProducts = array();
-
-        foreach ($orders as $order) {
-
-            $quantity = 0;
-
-            //meghatározott termékre, ha kivesszük a termek_id feltételt, akkor az összes termékre nézné, kényelmesebb is lenne a controller oldalon.
-            $stmt = $this->conn->preparedQuery("SELECT * FROM rendeles_reszletei WHERE rend_szam = ? AND termek_id = ?", array($order, $product_id));
-            while ($rowO = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-
-                if (array_key_exists($rowO["termek_id"], $product_quantity)) {
-                    $product_quantity[$rowO["termek_id"]] = $rowO["mennyiseg"];
-                } else {
-                    $product_quantity[$rowO["termek_id"]] += $rowO["mennyiseg"];
-                }
-
-
-            }
-        }
-
-        return $product_quantity;
-
     }
 
     /**

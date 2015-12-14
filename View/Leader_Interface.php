@@ -97,6 +97,46 @@ function editDiscount($id, $nValue)
     $user->productEditDiscount($id, $nValue);
 }
 
+function statistic($id, $nValue)
+{
+
+    //echo var_dump($nValue);
+    //echo ">>>" . $nValue . "<<<<";
+    $dates = preg_split('/[_]/', $nValue);
+    //print_r($dates);
+
+    $sD = date($dates[0]); // . " h:i:s");
+    $eD = date("Y-m-d");// h:i:s");
+    if ($dates[1] != null || $dates[1] != "") {
+        //var_dump($dates[1]);
+        $eD = date($dates[1]);// . " h:i:s");
+    }
+
+    if ($sD > $eD) {
+        $helper = $sD;
+        $sD = $eD;
+        $eD = $helper;
+    }
+
+    $sD = date($sD . " 00:00:00");
+    $eD = date($eD . " 23:59:59");
+    //echo "sd: " . $sD . " eD: " . $eD;
+    //  echo "datetime: " . date("Y-m-d h:i:s");
+
+
+
+    $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
+    echo $user->productSoldStatistic($id, $sD, $eD);
+
+    /*
+while( $row = $ar->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
+    echo "qty: ". $row[0];
+}
+*/
+
+
+}
+
 $method = $_POST['callFunc'];
 $id = $_POST['id'];
 $nValue = null;

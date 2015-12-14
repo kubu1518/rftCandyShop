@@ -215,7 +215,7 @@ $conn = new ConnectionHandler();
 
             var x = id.split("_");
             id = x[1];
-            
+
             console.log("id: "+id +" -- value: "+nValue);
 
             $.ajax({

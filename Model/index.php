@@ -163,6 +163,8 @@ echo $d_diff->days;
 
 //echo "diff: ". date_diff( $w, $d , FALSE) ."<br>";
 */
+echo date("Y-m-d h:i:s")."<br>";
+
 $conn = new ConnectionHandler();
 $product_id = 20;
 $start_date = date("2015-12-01 00:00:00");

@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/ListingUtilities.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/ListingUtilities.php");
 
 ?>
 

@@ -12,7 +12,7 @@ class UserAsStorekeeper extends User
 {
     private $orders;
     private $newRefilling;
-    private $conn;
+    private static $conn;
 
     /**
      * UserAsStorekeeper constructor.
@@ -20,7 +20,7 @@ class UserAsStorekeeper extends User
     public function __construct($user_id, $email, $password)
     {
         parent::__construct($user_id, $email, $password);
-        $this->conn = new ConnectionHandler();
+        self::$conn = new ConnectionHandler();
     }
 
 
@@ -35,7 +35,7 @@ class UserAsStorekeeper extends User
     public function orderHandling($orderNumber, $status)//void
     {
 
-        $this->conn->preparedUpdate("megrendelesek",array("statusz_id"),array($status),"rend_szam = ?",array($orderNumber));
+        self::$conn->preparedUpdate("megrendelesek",array("statusz_id"),array($status),"rend_szam = ?",array($orderNumber));
         echo "update is done";
 
     }
@@ -75,7 +75,7 @@ class UserAsStorekeeper extends User
             //var_dump($transport_id);
             //echo "<br>transport id: " . $transport_id . "<br>";
 
-            $this->conn->preparedInsert("raktar", array("termek_id", "szall_id", "mennyiseg", "stat_id"),
+            self::$conn->preparedInsert("raktar", array("termek_id", "szall_id", "mennyiseg", "stat_id"),
                 array($p_id, $transport_id, $quantity, 1));
 
             return "Sikeres raktár feltöltés!";
@@ -93,7 +93,7 @@ class UserAsStorekeeper extends User
     public function getTransportId($expiration_date)
     {
 
-        $stmt = $this->conn->preparedQuery("SELECT szall_id FROM szallitmanyok WHERE lejar_datum = ?", array($expiration_date));
+        $stmt = self::$conn->preparedQuery("SELECT szall_id FROM szallitmanyok WHERE lejar_datum = ?", array($expiration_date));
 
         $row = $stmt->fetch(PDO::FETCH_NUM);
 
@@ -102,7 +102,7 @@ class UserAsStorekeeper extends User
 
             //echo "<br>transport is not exist<br>";
             $today = date("Y-m-d h:i:s");
-            $this->conn->preparedInsert("szallitmanyok", array("beerk_datum", "lejar_datum"), array($today, $expiration_date));
+            self::$conn->preparedInsert("szallitmanyok", array("beerk_datum", "lejar_datum"), array($today, $expiration_date));
 
             return false;
 
@@ -127,7 +127,7 @@ class UserAsStorekeeper extends User
     public function stockProductDisposal($product_id,$cargo_id,$quantity,$stat,$removedQuantity)
     {
 
-        
+
 
 
     }
@@ -143,7 +143,7 @@ class UserAsStorekeeper extends User
     public function disposal()
     {//void
 
-        $this->conn->preparedDelete("raktar","stat_id=? or stat_id=? ",array(0,2));
+        self::$conn->preparedDelete("raktar","stat_id=? or stat_id=? ",array(0,2));
     }
 
 

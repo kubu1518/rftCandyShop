@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsLeader.php";
 
 /**
@@ -43,6 +42,11 @@ $result = "";
     echo "success!".$result;
 }
 */
+
+if($_SESSION["right_level"] != 1){
+    die("Ehhez nincs jogosultságod! <a href='index.php'>Kezdő oldal</a>");
+
+}
 
 function deleteP($id, $nValue)
 {
@@ -117,6 +121,10 @@ function statistic($id, $nValue)
         $sD = $eD;
         $eD = $helper;
     }
+
+
+
+
 
     $sD = date($sD . " 00:00:00");
     $eD = date($eD . " 23:59:59");

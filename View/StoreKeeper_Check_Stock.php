@@ -1,19 +1,21 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsStorekeeper.class.php";
+
 session_start();
-$_SESSION["id"] = 10;
-$_SESSION["email"] = "boss@company.com";
-$_SESSION["password"] = "1234";
+$user = unserialize($_SESSION['actUser']);
+
+
+$_SESSION["id"] = $user->getId();
+$_SESSION["email"] = $user->getEmail();
+$_SESSION["password"] = $user->getPassword();
 $_SESSION["right_level"] = 2;
 $_SESSION["message"] = "";
-
 /**
  * Created by PhpStorm.
  * User: ngg
  * Date: 12/14/2015
  * Time: 10:41 AM
  */
-
-require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 
 
 $conn = new ConnectionHandler();
@@ -28,7 +30,7 @@ $conn = new ConnectionHandler();
     <meta charset="UTF-8">
     <title>Admin felület</title>
     <link rel="stylesheet" type="text/css" href="css/admin.css">
-
+    <script src="js/Admin.js"></script>
 </head>
 <body>
 
@@ -41,6 +43,8 @@ $conn = new ConnectionHandler();
         <a href="StoreKeeper_Scrapping_Stock.php">Leselejtezés</a>
         <a href="StoreKeeper_Remove_Stock.php">Elszállíttatás</a>
         <a href="StoreKeeper_Orders_Handling.php">Rendelések kezelése</a>
+
+        <input type="button" id="logout" value="Kijelentkezés">
     </div>
 
     <div class="container">

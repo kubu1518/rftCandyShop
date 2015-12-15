@@ -6,8 +6,8 @@
  * Time: 14:38
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/ListingUtilities.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsCustomer.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/ListingUtilities.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsCustomer.php");
 
 session_start();
 $lu = new ListingUtilities();

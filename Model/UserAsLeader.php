@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/Connectio
 class UserAsLeader extends User
 {
 
-    private $conn;
+    private static $conn;
 
     /**
      * UserAsLeader constructor.
@@ -20,7 +20,7 @@ class UserAsLeader extends User
     public function __construct($user_id, $email, $password)
     {
         parent::__construct($user_id, $email, $password);
-        $this->conn = new ConnectionHandler();
+        self::$conn = new ConnectionHandler();
     }
 
     /**
@@ -38,7 +38,7 @@ class UserAsLeader extends User
             try {
 
 
-                $this->conn->preparedInsert("termekek",
+                self::$conn->preparedInsert("termekek",
                     array("nev", "kat_azon", "kisz_azon", "suly", "egysegar", "min_keszlet",
                         "min_rend", "kim_azon", "akcio", "reszletek", "kep"),
                     array($product->getName(), $product->getCategory(), $product->getPackage(), $product->getWeight(),
@@ -71,7 +71,7 @@ class UserAsLeader extends User
      */
     public function checkProductExist($name)
     {
-        $stmt = $this->conn->preparedQuery("SELECT count(*) FROM termekek WHERE nev=?", array($name));
+        $stmt = self::$conn->preparedQuery("SELECT count(*) FROM termekek WHERE nev=?", array($name));
         $number = $stmt->fetch(PDO::FETCH_NUM);
 
         //die("number: " . $number[0]);
@@ -94,7 +94,7 @@ class UserAsLeader extends User
     {//void
         try {
 
-            $this->conn->preparedUpdate("raktar", array("stat_id"), array("0"), "termek_id = ?", array($product_id));
+            self::$conn->preparedUpdate("raktar", array("stat_id"), array("0"), "termek_id = ?", array($product_id));
             die("update után");
         } catch (Exception $e) {
             return "Hiba, nem sikerült a törlés/ státusz átállítás!";
@@ -114,7 +114,7 @@ class UserAsLeader extends User
     public function productEditPrice($product_id, $price)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("egysegar"), array($price), "t_azon = ?", array($product_id));
+            self::$conn->preparedUpdate("termekek", array("egysegar"), array($price), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az ármódosítás!";
         }
@@ -134,7 +134,7 @@ class UserAsLeader extends User
         echo "pdid: " . $product_id . " __ stock: " . $min_stock;
 
         try {
-            $this->conn->preparedUpdate("termekek", array("min_keszlet"), array($min_stock), "t_azon = ?", array($product_id));
+            self::$conn->preparedUpdate("termekek", array("min_keszlet"), array($min_stock), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az raktáron tartandó mennyiség módosítása!";
         }
@@ -153,7 +153,7 @@ class UserAsLeader extends User
     public function productMinimalOrderQuantity($product_id, $min_quantity)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("min_rend"), array($min_quantity), "t_azon = ?", array($product_id));
+            self::$conn->preparedUpdate("termekek", array("min_rend"), array($min_quantity), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az minimum rendelhető mennyiség módosítása!";
         }
@@ -171,7 +171,7 @@ class UserAsLeader extends User
     public function productEditHighlighting($product_id, $hl_id)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), "t_azon = ?", array($product_id));
+            self::$conn->preparedUpdate("termekek", array("kim_azon"), array($hl_id), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az kiemelés módosítása!";
         }
@@ -183,7 +183,7 @@ class UserAsLeader extends User
     public function productEditDiscount($product_id, $hl_id)
     {
         try {
-            $this->conn->preparedUpdate("termekek", array("akcio"), array($hl_id), "t_azon = ?", array($product_id));
+            self::$conn->preparedUpdate("termekek", array("akcio"), array($hl_id), "t_azon = ?", array($product_id));
         } catch (Exception $e) {
             return "Hiba, nem sikerült az kiemelés módosítása!";
         }
@@ -227,7 +227,7 @@ class UserAsLeader extends User
         $product_quantity = array();
 
 
-        $stmt = $this->conn->preparedQuery(
+        $stmt = self::$conn->preparedQuery(
             "SELECT SUM(rendeles_reszletei.mennyiseg)
             FROM megrendelesek INNER JOIN rendeles_reszletei
                 ON megrendelesek.rend_szam=rendeles_reszletei.rend_szam

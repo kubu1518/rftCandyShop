@@ -6,7 +6,7 @@
  * Time: 19:44
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsCustomer.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsCustomer.php");
 session_start();
 $user = unserialize($_SESSION['actUser']);
 

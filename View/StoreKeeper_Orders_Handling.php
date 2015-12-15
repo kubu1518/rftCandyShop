@@ -1,11 +1,7 @@
 <?php
-session_start();
-$_SESSION["id"] = 10;
-$_SESSION["email"] = "boss@company.com";
-$_SESSION["password"] = "1234";
-$_SESSION["right_level"] = 2;
-$_SESSION["message"] = "";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsStorekeeper.class.php";
 
+session_start();
 
 /**
  * Created by PhpStorm.
@@ -15,11 +11,9 @@ $_SESSION["message"] = "";
  */
 
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsStoreKeeper.class.php";
 
 $conn = new ConnectionHandler();
-$message = "";
+
 
 
 ?>
@@ -29,7 +23,7 @@ $message = "";
     <title>Admin felület</title>
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <script src="script/jquery-1.11.3.js"></script>
-
+    <script src="js/Admin.js"></script>
     <script>
 
         function editStatus(id, nValue) {
@@ -49,6 +43,7 @@ $message = "";
                     },
                     success: function (response) {
                         console.log(response);
+                        alert(response);
                         location.reload();
                     }
                 })
@@ -70,6 +65,8 @@ $message = "";
         <a href="StoreKeeper_Scrapping_Stock.php">Leselejtezés</a>
         <a href="StoreKeeper_Remove_Stock.php">Elszállíttatás</a>
         <a href="StoreKeeper_Orders_Handling.php">Rendelések kezelése</a>
+
+        <input type="button" id="logout" value="Kijelentkezés">
     </div>
 
     <div class="container">

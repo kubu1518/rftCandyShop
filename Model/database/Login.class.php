@@ -1,9 +1,9 @@
 <?php
 
 require_once('ConnectionHandler.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsCustomer.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsLeader.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsStorekeeper.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsCustomer.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsLeader.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsStorekeeper.class.php");
 
 /**
  * Created by PhpStorm.
@@ -97,9 +97,11 @@ class Login
                 $_SESSION['actUser'] = serialize(new UserAsCustomer($this->uid, $this->email, $this->password));
                 $direct = "index.php";
                 break;
-            case 'R' :
+            case 'R' :  $_SESSION['actUser'] = serialize(new UserAsStorekeeper($this->uid, $this->email, $this->password));
+                $direct = "StoreKeeper_Check_Stock.php";
                 break;
-            case 'V' :
+            case 'V' :  $_SESSION['actUser'] = serialize(new UserAsLeader($this->uid, $this->email, $this->password));
+                $direct = "Leader_Add_Product.php";
                 break;
         }
 

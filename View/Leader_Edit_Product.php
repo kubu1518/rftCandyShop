@@ -1,10 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/UserAsLeader.php";
+
 session_start();
-$_SESSION["id"] = 10;
-$_SESSION["email"] = "boss@company.com";
-$_SESSION["password"] = "1234";
-$_SESSION["right_level"] = 1;
-$_SESSION["message"] = "";
 /**
  * Created by PhpStorm.
  * User: ngg
@@ -13,7 +10,6 @@ $_SESSION["message"] = "";
  */
 //include "Header.html";
 
-include $_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/database/ConnectionHandler.class.php";
 $conn = new ConnectionHandler();
 
 ?>
@@ -24,6 +20,7 @@ $conn = new ConnectionHandler();
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
     <script src="script/jquery-1.11.3.js"></script>
+    <script src="js/Admin.js"></script>
 
     <script>
         function showhide(id) {
@@ -248,6 +245,8 @@ $conn = new ConnectionHandler();
         <a href="Leader_Add_Product.php">Új termék felvitele</a>
         <a href="Leader_Edit_Product.php">Termék módosítás</a>
         <a href="Leader_Statistic.php">Statisztika készítés</a>
+
+        <input type="button" id="logout" value="Kijelentkezés">
     </div>
 
     <div class="container">

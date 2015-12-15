@@ -163,6 +163,7 @@ echo $d_diff->days;
 
 //echo "diff: ". date_diff( $w, $d , FALSE) ."<br>";
 */
+/*
 echo date("Y-m-d h:i:s")."<br>";
 
 $conn = new ConnectionHandler();
@@ -184,6 +185,89 @@ $row = $stmt->fetch(PDO::FETCH_NUM);
 
 //var_dump($row);
 echo 'q: '.$row[0];
+ */
+
+
+
+$conn = new ConnectionHandler();
+$orderNumber = 2;
+
+
+
+$stmt = $conn->preparedQuery(
+    "SELECT rr.rend_szam ,r.szall_id ,r.termek_id ,sum(r.mennyiseg) as raktaron,rr.mennyiseg,sz.lejar_datum FROM `raktar` r
+      INNER JOIN rendeles_reszletei rr ON r.termek_id=rr.termek_id AND r.stat_id <> 0 AND rr.rend_szam = ?
+      inner JOIN szallitmanyok sz ON r.szall_id=sz.szall_id
+      group BY r.termek_id
+      order by r.termek_id, sz.lejar_datum",
+    array($orderNumber));
+
+while($row = $stmt->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
+
+    echo $row[0]." ".$row[1]." ".$row[2]." ".$row[3]." ".$row[4]." ".$row[5]."<br>";
+    if($row[3] < $row[4]){
+        echo "Nem elég a készlet hozzá!";
+        break;
+    }
+
+
+}
+
+echo "-------------------------<br>";
+
+//lekérem a szállítmányokat az azokhoz a termékekhez amelyekből rendelés történt az adott azonosítóval.
+
+// rendelés_id, szállitmány_id, termek_id, mennyiség raktáron, szükséges mennyiség , lejárati dátum
+$stmt2 = $conn->preparedQuery("SELECT rr.rend_szam ,r.szall_id ,r.termek_id ,r.mennyiseg as raktaron,rr.mennyiseg,sz.lejar_datum
+                                        FROM `raktar` r INNER JOIN rendeles_reszletei rr
+                                        ON r.termek_id=rr.termek_id AND r.stat_id <> 0 AND rr.rend_szam = ?
+                                        inner JOIN szallitmanyok sz ON r.szall_id=sz.szall_id
+                                        order by r.termek_id, sz.lejar_datum",array($orderNumber));
+
+//$raktaronDb = array();
+
+//a szükséges mennyiség nyilvántartása kulcs: termek_id => szükséges mennyiség
+$kellDb = array();
+
+
+//ez előtt ellenőrzés történik ,hogy van-e elég termék raktáron, így csak akkor jutunk el ide, ha igen.
+
+while($row = $stmt2->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
+
+    echo $row[0]." ".$row[1]." ".$row[2]." ".$row[3]." ".$row[4]." ".$row[5]."<br>";
+
+    $termek_id = $row[2];
+
+    //ha nem létezik a termek_id akkor belerakjuk a szükséges mennyiséget
+    if(array_key_exists($row[2],$kellDb) == false ) {
+        $kellDb[$termek_id] = $row[4];
+    }
+
+    //ha a szükséges mennyiség nagyobb mint nulla az adott termék_id esetén.
+    if($kellDb[$termek_id] > 0){
+        $raktaron = $row[3];
+
+        //ha több kellene mint amennyi van az adott szállítmányban a termékből, vagy ugyanannyi
+        if( ( ($raktaron - $kellDb[$termek_id]) < 0) || ($raktaron - $kellDb[$termek_id]) == 0 ){
+
+            $kellDb[$termek_id] = $kellDb[$termek_id] - $raktaron;
+            $raktaron = 0;
+
+            echo "update raktaron:".$raktaron." && ennyi kell meg: ".$kellDb[$termek_id]."<br>";
+        }
+        //több van a szállítmányban mint amennyi kell
+        else{
+
+            $raktaron -= $kellDb[$termek_id];
+            $kellDb[$termek_id] = 0;
+
+            echo "update raktaron:".$raktaron ." ennyi kell meg: ".$kellDb[$termek_id]."<br>";
+        }
+
+    }
+
+
+}
 
 ?>
 </body>

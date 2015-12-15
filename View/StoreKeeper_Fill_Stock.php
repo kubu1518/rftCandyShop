@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="UTF-8">
     <title>Admin felület</title>
     <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <script src="script/jquery-1.11.3.js"></script>
     <script src="js/Admin.js"></script>
 </head>
 <body>

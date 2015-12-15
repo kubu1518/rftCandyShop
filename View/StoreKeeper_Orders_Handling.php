@@ -43,6 +43,7 @@ $conn = new ConnectionHandler();
                     },
                     success: function (response) {
                         console.log(response);
+                        alert(response);
                         location.reload();
                     }
                 })

@@ -35,23 +35,50 @@ $conn = new ConnectionHandler();
     <script src="js/Admin.js"></script>
     <script>
 
+
+        $(document).ready(function(){
+            $("#highlight").change(function(){
+
+                var h = $('#highlight').val();
+
+if(h == 4){
+    alert("h is 4");
+
+    $('#action').prop('disabled',false);
+    $('#action').attr("min","1");
+    $('#action').attr("max","90");
+    $('#action').val("1");
+
+}
+                else{
+    alert("h is not 4");
+
+    $('#action').prop('disabled',true);
+    $('#action').val("0");
+}
+
+
+
+
+
+
+
+            })
+        });
+/*
         function checkHighlight() {
 
-            var x = document.getElementById("highlight").selectedIndex;
+            var x = document.getElementById("highlight").value;
             var actionInput = document.getElementById("action");
-            if (x === 3) {
 
+            alert(x + " - "+actionInput.value)
+            if (x === 4) {
+                alert(x);
                 actionInput.removeAttribute('disabled');
                 actionInput.setAttribute("min", "1");
                 actionInput.setAttribute("max", "90");
                 actionInput.value = "1";
-                //alert(x);
-            }
-            else if (x == 1) {
-                actionInput.value = "50";
-                actionInput.setAttribute("min", "50");
-                actionInput.setAttribute("max", "75");
-                actionInput.removeAttribute('disabled');
+
             }
             else {
                 actionInput.value = "0";
@@ -60,7 +87,7 @@ $conn = new ConnectionHandler();
 
         }
 
-
+*/
     </script>
 
 
@@ -137,20 +164,21 @@ $conn = new ConnectionHandler();
                                                        required title="Adja meg a termékből rendelhető minium mennyiséget!"></p>
 
 
-                <p><label>Kiemelés</label><select id="kim_azon" class="inp" name="kim_azon"
-                                                  onchange="checkHighlight()">;
+                <p><label>Kiemelés</label><select id="highlight" class="inp" name="kim_azon">;
                         <?php
                         $stmt = $conn->preparedQuery("SELECT * FROM kiemelesek");
                         while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-                            echo " <option value=" . $row[0] . ">" . $row[1] . "</option>";
+                            if($row[0] != 2) {
+                                echo " <option value=" . $row[0] . ">" . $row[1] . "</option>";
+                            }
                         }
 
 
                         echo "</select></p>";
                         ?>
 
-                <p><label>Akció</label><input type="number" id="akcio" name="akcio" class="inp" min="0" max="50"
-                                              value="0"></p>
+                <p><label>Akció</label><input type="number" id="action" name="akcio" class="inp" min="0" max="50"
+                                              value="0" disabled></p>
 
                 <p><label>Részletes leírás</label> <textarea id="reszletek" name="reszletek" maxlength="128"
                                                              rows="8" cols="50"class="inp" required

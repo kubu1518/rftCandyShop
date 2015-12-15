@@ -35,10 +35,62 @@ class UserAsStorekeeper extends User
     public function orderHandling($orderNumber, $status)//void
     {
 
-        self::$conn->preparedUpdate("megrendelesek",array("statusz_id"),array($status),"rend_szam = ?",array($orderNumber));
-        echo "update is done";
+        if ($this->checkStockEnoughProduct($orderNumber)){
+
+
+
+
+
+
+
+            self::$conn->preparedUpdate("megrendelesek",array("statusz_id"),array($status),"rend_szam = ?",array($orderNumber));
+            echo "Sikeres státusz változtatás";
+
+
+
+        }
+        else {
+            echo "ERROR: A raktáron lévő mennyiségből nem lehet kiszolgálni a rendelést!";
+        }
+
+
 
     }
+
+    /**
+     * Ellenőrzi ,hogy elég termék-e van-e raktáron a rendelés kiszolgálásához.
+     *
+     * @param int $orderNumber
+     * @return bool
+     */
+    public function checkStockEnoughProduct($orderNumber)
+    {
+
+        $stmt = self::$conn->preparedQuery(
+            "SELECT rr.rend_szam ,r.szall_id ,r.termek_id ,sum(r.mennyiseg) as raktaron,rr.mennyiseg,sz.lejar_datum FROM `raktar` r
+      INNER JOIN rendeles_reszletei rr ON r.termek_id=rr.termek_id AND r.stat_id <> 0 AND rr.rend_szam = ?
+      inner JOIN szallitmanyok sz ON r.szall_id=sz.szall_id
+      group BY r.termek_id
+      order by r.termek_id, sz.lejar_datum",
+            array($orderNumber));
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+
+            //echo $row[0] . " " . $row[1] . " " . $row[2] . " " . $row[3] . " " . $row[4] . " " . $row[5] . "<br>";
+            if ($row[3] < $row[4]) {
+                echo "Nem elég a készlet hozzá!";
+                return false;
+                break;
+            }
+
+
+
+        }
+
+        return true;
+    }
+
+
 
     public function checkStock()
     {

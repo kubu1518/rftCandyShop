@@ -26,12 +26,36 @@ if ($size == 0) {
 //        $products[$product['t_azon']] = new Product($product);
         $tId = $product['t_azon'];
         $name = $product['nev'];
+
         if ($product['akcio'] > 0) {
             $decrease = $product['akcio'];
+            $originPrice = $product['egysegar'];
             $price = $product['egysegar'] * (1 - ($decrease / 100));
         } else {
             $price = $product['egysegar'];
+            $decrease = "";
         }
+
+        $highlighting = $product['kim_nev'];
+        $class = "";
+        switch($highlighting){
+            case 'akciós' :
+                $class='action';
+                $decrease = "-" . $decrease . "%";
+                break;
+            case 'árcsökkentett' :
+                $class='sale';
+                $decrease = "-" . $decrease . "%";
+                break;
+            case 'új termék' :
+                $class='new';
+                $decrease = "NEW";
+                break;
+        }
+
+
+
+
         $minOrder = $product['min_rend'];
 
         $image = "../View/images/product/" . $product['kep'];
@@ -39,13 +63,12 @@ if ($size == 0) {
         $cat = $product['kat_nev'];
         $pack = $product['kisz_nev'];
         $weight = $product['suly'];
-        $highlighting = $product['kim_nev'];
-
 
         echo "<div class='productbox' id='$tId'><div class='image'>";
-        if ($product['akcio'] > 0) {
-            echo "<span class='sale'>-$decrease%</span>";
-        }
+
+        if($decrease != "")
+        echo "<span class='$class'>$decrease</span>";
+
         echo "<img src='$image' alt='$image'>";
         echo "</div><h2>$name</h2>";
         echo "<p>$price Ft + ÁFA</p>";

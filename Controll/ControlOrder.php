@@ -12,8 +12,8 @@ session_start();
 $user = unserialize($_SESSION['actUser']);
 $cart = $user->getCart();
 
-echo '<div id="orders"><p>A rendelni kívánt termékeid</p><table>';
-echo "<th>Termékkép</th><th>Név</th><th>Mennyiség</th><th>Ár</th>";
+echo '<div id="orders"><p>A rendelni kívánt termékeid</p><table class="default">';
+echo "<tr></tr><th>Termékkép</th><th>Név</th><th>Mennyiség</th><th>Ár</th></tr>";
 foreach ($cart->getProducts() as $pid => $product) {
     $image = "../View/images/product/" . $product->getImg();
     $name = $product->getName();

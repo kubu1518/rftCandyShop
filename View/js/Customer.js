@@ -9,6 +9,10 @@ $( window ).unload(function() {
 
 $(document).ready(function () {
 
+    $(".head.object1").click(function(){
+       window.location = "http://localhost/rftCandyShop/View/index.php"
+    });
+
     authButtonsLoad();
 
 
@@ -32,16 +36,13 @@ $(document).ready(function () {
 
 
     $("#watchorders").click(function(){
-        $("#alterablecontent").load("../../rftCandyshop/Controll/ControlWatchOrders.php",function(data){
-            alert(data)
-        })
+        $("#alterablecontent").load("../../rftCandyshop/Controll/ControlWatchOrders.php")
     });
 
 
     $(".category").click(function () {
         var id = $(this).attr("id");
         $("#searchName").val("");
-        console.log(id);
         $("#searchCategory").val(id);
         $("#search").trigger("click")
     })
@@ -55,7 +56,7 @@ function addCart(button){
     $.get("../../rftCandyshop/Controll/ControlAddCart.php",{
        t_id : tid,
         qauntity : qauntity
-    },function(data){
+    },function(){
         authButtonsLoad();
     })
 }

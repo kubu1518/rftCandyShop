@@ -27,7 +27,7 @@ $user->orderStart($delAddress,$billAddress);
 
 $_SESSION['actUser'] = serialize($user);
 
-
+echo "<div id='paying'>";
 echo "<p>Fizetési módok:</p>";
 echo <<<Paying
     <table>
@@ -42,4 +42,6 @@ echo <<<Paying
         </tr>
     </table>
     <button id="finorder" >Megrendelés</button>
+    <button id="backtoindex">Mégse</button>
 Paying;
+echo "</div>";

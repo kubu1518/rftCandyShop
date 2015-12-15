@@ -27,6 +27,7 @@ foreach ($cart->getProducts() as $key => $value) {
 }
 $result .= "</div><span> Összeg: " . $cart->cartSubTotal() . " Ft. </span>";
 $result .= "<button id='nexttoorder'>Pénztár</button>";
+$result .= "<button id='backtoindex'>Vissza</button>";
 $result .= "</div>";
 echo $result;
 

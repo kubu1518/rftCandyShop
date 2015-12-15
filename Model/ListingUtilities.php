@@ -99,8 +99,8 @@ class ListingUtilities
                 SELECT t_azon, nev, kat_nev, kisz_nev, suly, egysegar, min_rend,
 	            kim_nev, akcio, reszletek, kep FROM
                 ((termekek t JOIN kategoriak kat ON t.kat_azon = kat.kat_azon)
-                 JOIN kiszerelesek kisz ON t.kat_azon = kisz.kisz_azon)
-                 JOIN kiemelesek kim ON t.kat_azon = kim.kim_azon
+                 JOIN kiszerelesek kisz ON t.kisz_azon = kisz.kisz_azon)
+                 JOIN kiemelesek kim ON t.kim_azon = kim.kim_azon
                  WHERE nev LIKE ? AND t.kat_azon = ?
 SELECT;
         return $this->conn->preparedQuery($sql,array($searchEntitiy,$categ_id))->fetchAll(PDO::FETCH_ASSOC);

@@ -64,8 +64,8 @@
 
 #workzone .objectSearch {
     float: left;
-    min-width: 700px;
-    max-width: 760px;
+    min-width: 500px;
+    max-width: 900px;
     font-family: 'Roboto Condensed', sans-serif;
     color: #F39EB1;
     font-size: larger;
@@ -81,8 +81,8 @@
 
 #workzone #alterablecontent{
     float: none;
-    min-width: 700px;
-    max-width: 760px;
+    min-width: 500px;
+    max-width: 900px;
     overflow-y: auto;
     height: 535px;
 }

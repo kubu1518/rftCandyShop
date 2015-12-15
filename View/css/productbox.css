@@ -6,7 +6,9 @@
     border: 1px solid #ddd;
     text-align: center;
     padding: 10px;
-    width: 300px;
+    min-width: 200px;
+    width: auto;
+    max-width: 258px;
     height: auto;
 }
 .productbox button {
@@ -33,16 +35,16 @@
     background: #fff;
     padding: 10px;
     position: relative;
-    width: 280px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 .productbox .image span {
      position: absolute
  }
 
 .productbox .image img {
-    width: 280px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 
 

@@ -80,3 +80,21 @@ label:after { content: ": " }
     border: 2px solid #73AD21;
     display: block;
 }
+
+input.short {
+    width: 50px;
+    padding: 2px;
+    border: 1px;
+    border-color: black;
+}
+
+input.long {
+    width: 150px;
+    padding: 2px;
+    border: 1px;
+    border-color: black;
+}
+
+input.mennyiseg {
+    width: 50px;
+}

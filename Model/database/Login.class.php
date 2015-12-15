@@ -3,7 +3,7 @@
 require_once('ConnectionHandler.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsCustomer.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsLeader.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsStorekeeper.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/UserAsStorekeeper.class.php");
 
 /**
  * Created by PhpStorm.

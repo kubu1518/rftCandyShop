@@ -142,7 +142,7 @@ foreach($v as $value){
 //echo "id: ".$result."<br>";
 */
 
-
+/*
 echo "<p>Dates</p><br>";
 $tomorrow = strtotime("tomorrow");
 $week = strtotime("+7 day");
@@ -162,9 +162,28 @@ echo $d_diff->format("%R");
 echo $d_diff->days;
 
 //echo "diff: ". date_diff( $w, $d , FALSE) ."<br>";
+*/
+echo date("Y-m-d h:i:s")."<br>";
+
+$conn = new ConnectionHandler();
+$product_id = 20;
+$start_date = date("2015-12-01 00:00:00");
+$end_date = date("2015-12-31 23:59:59");
+
+$stmt = $conn->preparedQuery(
+    "SELECT SUM(rendeles_reszletei.mennyiseg)
+            FROM megrendelesek INNER JOIN rendeles_reszletei
+                ON megrendelesek.rend_szam=rendeles_reszletei.rend_szam
+                    AND megrendelesek.rend_datum >= ?
+                    AND megrendelesek.rend_datum <= ?
+                    AND rendeles_reszletei.termek_id = ?", array($start_date, $end_date, $product_id)
+);
+
+$row = $stmt->fetch(PDO::FETCH_NUM);
 
 
-
+//var_dump($row);
+echo 'q: '.$row[0];
 
 ?>
 </body>

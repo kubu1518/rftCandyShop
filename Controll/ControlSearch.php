@@ -43,10 +43,6 @@ if ($size == 0) {
                 $class='action';
                 $decrease = "-" . $decrease . "%";
                 break;
-            case 'árcsökkentett' :
-                $class='sale';
-                $decrease = "-" . $decrease . "%";
-                break;
             case 'új termék' :
                 $class='new';
                 $decrease = "NEW";
@@ -71,7 +67,14 @@ if ($size == 0) {
 
         echo "<img src='$image' alt='$image'>";
         echo "</div><h2>$name</h2>";
-        echo "<p>$price Ft + ÁFA</p>";
+
+        if($class == "action") {
+            echo "<p>Eredeti ár: $originPrice Ft</p>";
+            echo "<p style='color: deeppink'>$price Ft + ÁFA</p>";
+        }else{
+            echo "<p>$price Ft + ÁFA</p>";
+        }
+
         if (isset($_SESSION['actUser'])) {
             echo "<input type='number' min='1' value='1' size='3' />";
             echo "<button class='pbcart'>kosárba</button>";

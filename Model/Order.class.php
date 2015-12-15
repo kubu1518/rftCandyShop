@@ -15,6 +15,7 @@ class Order
     private $status;
     private $quantities;
     private $products;
+    private $subtotal;
 
 
     /**
@@ -30,16 +31,15 @@ class Order
 
 
 
-    public function __construct( $orderDate, $deliveryAddress, $billAddress, $status, $quantities, $products)
+    public function __construct($deliveryAddress, $billAddress, $status, $quantities, $products,$subtotal)
     {
-        $this->orderDate = $orderDate;
         $this->deliveryAddress = $deliveryAddress;
         $this->billAddress = $billAddress;
         $this->status = $status;
         $this->quantities = $quantities;
         $this->products = $products;
+        $this->subtotal = $subtotal;
     }
-
 
     /**
      * @return mixed
@@ -47,14 +47,6 @@ class Order
     public function getOrderDate()
     {
         return $this->orderDate;
-    }
-
-    /**
-     * @param mixed $orderDate
-     */
-    public function setOrderDate($orderDate)
-    {
-        $this->orderDate = $orderDate;
     }
 
     /**
@@ -66,27 +58,11 @@ class Order
     }
 
     /**
-     * @param mixed $deliveryAddress
-     */
-    public function setDeliveryAddress($deliveryAddress)
-    {
-        $this->deliveryAddress = $deliveryAddress;
-    }
-
-    /**
      * @return mixed
      */
     public function getBillAddress()
     {
         return $this->billAddress;
-    }
-
-    /**
-     * @param mixed $billAddress
-     */
-    public function setBillAddress($billAddress)
-    {
-        $this->billAddress = $billAddress;
     }
 
     /**
@@ -98,27 +74,11 @@ class Order
     }
 
     /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
      * @return mixed
      */
     public function getQuantities()
     {
         return $this->quantities;
-    }
-
-    /**
-     * @param mixed $quantities
-     */
-    public function setQuantities($quantities)
-    {
-        $this->quantities = $quantities;
     }
 
     /**
@@ -130,33 +90,16 @@ class Order
     }
 
     /**
-     * @param mixed $products
+     * @param mixed $orderDate
      */
-    public function setProducts($products)
+    public function setOrderDate($orderDate)
     {
-        $this->products = $products;
+        $this->orderDate = $orderDate;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
 
-    /**
-     * @param mixed $amount
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-    }
 
-    function __toString()
-    {
-     return "";
-    }
+
 
 
 }

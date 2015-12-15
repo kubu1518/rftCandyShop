@@ -116,6 +116,24 @@ SELECT;
     }
 
     /**
+     *
+     */
+    public function listingCustomerOrdersByItsId($cusId){
+        $stmt = $this->conn->preparedQuery("Select * from megrendelesek m JOIN megrendeles_statusz s ON m.statusz_id = s.statusz_id where u_id = ?",array($cusId));
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $orderDetails = [];
+        foreach($orders as $o){
+            $stmt = $this->conn->preparedQuery("Select * from rendeles_reszletei mr JOIN termekek t on mr.termek_id = t.t_azon where mr.rend_szam = ?",array($o['rend_szam']));
+            $orderDetails[$o['rend_szam']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+
+
+        return array($orders,$orderDetails);
+    }
+
+    /**
      * Kiválogatja a megrendeléseket
      *
      * @param int $product_id

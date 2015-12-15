@@ -1,15 +1,129 @@
-#cartdiv{
-    margin: 0 auto;
-    background-color: #d492c5;
-    border-radius: 10px;
+#bigtext {
+    float: left;
+    width: 170px;
+    height: 566px;
+}
+
+#bigtext div{
+    color: deeppink;
+    text-shadow: 1px 1px black;
     font-family: 'Lobster', cursive;
+   font-size: 100px;
+    /* Safari, Chrome */
+    -webkit-transform: rotate(-90deg);
+
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+
+    /* IE */
+    -ms-transform: rotate(-90deg);
+
+    /* Opera */
+    -o-transform: rotate(-90deg);
+
+    /* Older versions of IE */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+    /* CSS3 standard as defined here: http://www.w3.org/TR/css3-transforms/ */
+    transform: rotate(-90deg);
+    margin: 240px auto;
+}
+
+#cartdiv {
+    margin: 0 auto;
+    width: 870px;
+    height: auto;
+    background: rgba(249, 134, 226, 1);
+    background: -moz-linear-gradient(left, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(249, 134, 226, 1)), color-stop(32%, rgba(249, 134, 226, 1)), color-stop(51%, rgba(243, 150, 224, 1)), color-stop(99%, rgba(228, 190, 219, 1)));
+    background: -webkit-linear-gradient(left, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
+    background: -o-linear-gradient(left, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
+    background: -ms-linear-gradient(left, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
+    background: linear-gradient(to right, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f986e2', endColorstr='#e4bedb', GradientType=1);
+    padding: 30px;
+    border-radius: 10px;
+   box-shadow: -2px 1px 5px #333333;
+    font-family: 'Roboto Condensed', sans-serif;
 
 }
 
-#cartdiv input[type='number']:invalid{
+#content {
+    height: 400px;
+    overflow-y: auto;
+    border-top: 3px double white;
+    border-bottom: 3px double white;
+    margin: 10px 0;
+}
+
+#cartdiv p:first-child {
+    color: white;
+    font-size: 20px;
+    font-family: 'Lobster', cursive;
+}
+
+.basket_product {
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 30px;
+    margin: 10px auto;
+}
+
+.basket_product img {
+    width: 70px;
+    height: 40px;
+    border: 2px solid #F39EB1;
+    border-radius: 2px;
+}
+
+.basket_product span {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 30px;
+    color: white;
+}
+
+.basket_product input[type="number"] {
+    width: 40px;
+}
+
+.basket_product input[type='button'] {
+    background-color: #F39EB1;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: color, background-color 100ms;
+}
+
+.basket_product input[type='button']:hover {
+    color: #F39EB1;
+    background-color: white;
+}
+
+#workzone button{
+    background-color: #F39EB1;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: color, background-color 100ms;
+}
+
+#workzone button:hover{
+    color: #F39EB1;
+    background-color: white;
+}
+
+#cartdiv span{
+    color: white;
+    font-size: medium;
+}
+
+#cartdiv input[type='number']:invalid {
     border: 1px solid red;
 }
 
-#cartdiv input[type='number']:valid{
+#cartdiv input[type='number']:valid {
     border: 1px solid green;
 }

@@ -95,10 +95,9 @@ body {
 }
 
 #workzone {
-    margin-top: 40px;
     padding: 20px;
     background-color: white;
-    height: 80%;
+    height: auto;
     width: 80%;
     margin: 10px auto;
     border-radius: 68px 10px 46px 10px;

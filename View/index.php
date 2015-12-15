@@ -1,7 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/ListingUtilities.php");
 
-
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +41,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/ListingUtilities.ph
                 foreach ($categories as $k => $v) {
                     echo "<li id='$k' class='category'>$v</li>";
                 }
+                session_start();
+                if(isset($_SESSION['actUser'])){
+                    echo '<li><button type="button" id="watchorders">Rendeléseim megtekintése</button></li>';
+                }
                 ?>
-                <!--<li><button type="button" class=navbutton>Rendeléseim megtekintése</button></li>-->
+
             </ul>
         </nav>
         <div class="objectSearch">

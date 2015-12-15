@@ -4,6 +4,7 @@ require_once("User.class.php");
 require_once("Cart.class.php");
 require_once("Product.class.php");
 require_once("Order.class.php");
+require_once("StatusEnum.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "rftCandyShop/Model/database/ConnectionHandler.class.php");
 
 /**
@@ -16,7 +17,7 @@ class UserAsCustomer extends User
 {
     private $cart;
     private $orders;
-    private $actual_order;
+    private $actualOrder;
 
     /**
      * UserAsCustomer constructor.
@@ -26,6 +27,7 @@ class UserAsCustomer extends User
         parent::__construct($user_id, $email, $password);
         $this->orders = array(); /*ideiglenesen mert ez egy picitt bonyolult lesz*/
         $this->cart = $this->loadCart();
+        $this->actualOrder = null;
     }
 
     /**
@@ -49,15 +51,15 @@ class UserAsCustomer extends User
      */
     public function getActualOrder()
     {
-        return $this->actual_order;
+        return $this->actualOrder;
     }
 
     /**
-     * @param mixed $actual_order
+     * @param mixed $actualOrder
      */
-    public function setActualOrder($actual_order)
+    public function setActualOrder($actualOrder)
     {
-        $this->actual_order = $actual_order;
+        $this->actualOrder = $actualOrder;
     }
 
 
@@ -88,13 +90,36 @@ class UserAsCustomer extends User
     public function orderStart($delivery_address, $bill_address)
     {//void
 
-        $this->setActualOrder(new Order(new Date("Y-m-d"), $delivery_address, $bill_address, StatusEnum::OSSZE_ALLITAS_ALATT,
-            $this->getCart()->getItems(), $this->getCart()->getQuantity, $this->getCart()->cartSubTotal()));
+        $this->setActualOrder(new Order($delivery_address, $bill_address, StatusEnum::OSSZE_ALLITAS_ALATT,
+            $this->getCart()->getProducts(), $this->getCart()->getQuantities(), $this->getCart()->cartSubTotal()));
     }
 
     public function orderFinalize()
-    {//boolean
+    {
+        $ch = new ConnectionHandler();
+        $this->actualOrder->setOrderDate(date("Y-m-d h:i:s"));
 
+        $ch->preparedInsert("megrendelesek",array("u_id","rend_datum","szall_cim","szam_cim","statusz_id"),
+        array($this->getId(),
+            $this->actualOrder->getOrderDate(),
+            $this->actualOrder->getDeliveryAddress(),
+            $this->actualOrder->getBillAddress(),
+            $this->actualOrder->getStatus()));
+
+        $ordNum = $ch->preparedQuery("SELECT rend_szam  FROM megrendelesek
+                                      ORDER BY rend_szam DESC
+                                      LIMIT 1",array())->fetch(PDO::FETCH_NUM)[0];
+
+
+        foreach($this->cart->getProducts() as $pid => $prod){
+            $ch->preparedInsert("rendeles_reszletei",array('rend_szam','termek_id','mennyiseg','osszeg'),
+                array($ordNum,$prod->getId(),$this->cart->getQuantities()[$pid], $this->cart->itemSub($pid)));
+        }
+
+        array_push($this->orders,$this->actualOrder);
+        $this->actualOrder = null;
+        $this->cart = new Cart(array(),array());
+        $ch->preparedDelete("kosar","u_id = ?",array($this->getId()));
     }
 
     /**

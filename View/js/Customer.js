@@ -31,6 +31,11 @@ $(document).ready(function () {
     });
 
 
+    $("#watchorders").click(function(){
+        $("#alterablecontent").load("../../rftCandyshop/Controll/ControlWatchOrders.php",function(data){
+            alert(data)
+        })
+    });
 
 
     $(".category").click(function () {
@@ -51,17 +56,14 @@ function addCart(button){
        t_id : tid,
         qauntity : qauntity
     },function(data){
-        alert(data);
         authButtonsLoad();
     })
 }
 
 function authButtonsLoad (){
-    alert("auth but frissítés");
     $(".head.object2").load("../../rftCandyshop/Controll/ControlAuthButtons.php",function(){
         $("#logout").click(function () {
             $.get("../../rftCandyshop/Controll/ControlLogout.php", {}, function (data) {
-                alert(data);
                 window.location = "http://localhost/rftCandyShop/View/index.php"
             })
         });

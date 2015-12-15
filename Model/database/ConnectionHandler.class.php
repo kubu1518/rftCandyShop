@@ -33,7 +33,6 @@ class ConnectionHandler
         //echo "INSERT INTO $table ($fields) VALUES($qmarks)";
         $stmt = $this->conn->prepare("INSERT INTO $table ($fields) VALUES($qmarks)");
         $stmt->execute($values);
-
     }
 
 

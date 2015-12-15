@@ -120,12 +120,14 @@ class UserAsStorekeeper extends User
 
     }
 
+
     /**
      * Lejárt termékek kivonása a forgalomból.
      */
-    public function stockProductDisposal()
+    public function stockProductDisposal($product_id,$cargo_id,$quantity,$stat,$removedQuantity)
     {
 
+        
 
 
     }

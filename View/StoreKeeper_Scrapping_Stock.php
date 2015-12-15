@@ -54,8 +54,28 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                  selected.push($(this).attr('id'));
                  });*/
 
-                model = {};
-                jsonTomb = [];
+
+                jsonObj = [];
+
+/*
+ jsonObj = [];
+ $("input[class=email]").each(function() {
+
+ var id = $(this).attr("title");
+ var email = $(this).val();
+
+ item = {}
+ item ["title"] = id;
+ item ["email"] = email;
+
+ jsonObj.push(item);
+ });
+
+ console.log(jsonObj);
+
+
+*/
+
 
                 $("input:checkbox[class=checkb]:checked").each(function () {
                     alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
@@ -70,25 +90,62 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     var darab = $('#darab_'+id).val();
                     var stat = $('#stat_'+id).val();
 
-                    console.log("id: "+id+"  , termekid : "+termekid+"  , szallitmanyid : "+szallitmanyid+"  , nev : "+nev
-                        +"  , mennyiseg : "+mennyiseg+"  , datum : "+datum+"  , darab : "+darab+"  , stat : "+stat);
+                    item = {}
+                        item["termekid"] = termekid;
+                        item["szallitmanyid"] = szallitmanyid;
+                        item["mennyiseg"] = mennyiseg;
+                        item["darab"] = darab;
+                        item["stat"] = stat;
+
+
+                    jsonObj.push(item);
+
+
+                  //  console.log("id: "+id+"  , termekid : "+termekid+"  , szallitmanyid : "+szallitmanyid+"  , nev : "+nev
+                  //      +"  , mennyiseg : "+mennyiseg+"  , datum : "+datum+"  , darab : "+darab+"  , stat : "+stat);
+
+                    //console.log(jsonObj);
 
 
                 });
 
+                jsonO = JSON.stringify(jsonObj);
+
+                editProductStatus(jsonO);
 
             });
 
 
         });
 
+        function editProductStatus(jsonObj) {
 
-        /*
-         var selected = [];
-         $('#checkboxes input:checked').each(function() {
-         selected.push($(this).attr('name'));
-         });
-         */
+
+
+
+                $.ajax({
+                    url: 'SK_Interface.php',
+                    type: 'post',
+                    data: {
+                        "callFunc": "stockProductDisposal",
+                        "id" : null,
+                        "nValue" : jsonObj
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        location.reload();
+                    }
+                })
+                ;
+
+            }
+
+
+
+
+
+
+
     </script>
 </head>
 <body>

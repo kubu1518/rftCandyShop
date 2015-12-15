@@ -248,14 +248,14 @@ while($row = $stmt2->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
         $raktaron = $row[3];
 
         //ha több kellene mint amennyi van az adott szállítmányban a termékből, vagy ugyanannyi
-        if( ( ($raktaron - $kellDb[$termek_id]) < 0) || ($raktaron - $kellDb[$termek_id]) == 0 ){
+        if( ( ($raktaron - $kellDb[$termek_id]) < 0) ){
 
             $kellDb[$termek_id] = $kellDb[$termek_id] - $raktaron;
             $raktaron = 0;
 
             echo "update raktaron:".$raktaron." && ennyi kell meg: ".$kellDb[$termek_id]."<br>";
         }
-        //több van a szállítmányban mint amennyi kell
+        //több van a szállítmányban mint amennyi kell vag ugyananni
         else{
 
             $raktaron -= $kellDb[$termek_id];

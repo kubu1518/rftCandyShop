@@ -1,6 +1,7 @@
 #bigtext {
     float: left;
-    width: 170px;
+    min-width: 50px;
+    max-width: 100px;
     height: 566px;
 }
 
@@ -8,7 +9,7 @@
     color: deeppink;
     text-shadow: 1px 1px black;
     font-family: 'Lobster', cursive;
-   font-size: 100px;
+   font-size: 80px;
     /* Safari, Chrome */
     -webkit-transform: rotate(-90deg);
 
@@ -31,7 +32,8 @@
 
 #cartdiv {
     margin: 0 auto;
-    width: 870px;
+    width: auto;
+    max-width: 700px;
     height: auto;
     background: rgba(249, 134, 226, 1);
     background: -moz-linear-gradient(left, rgba(249, 134, 226, 1) 0%, rgba(249, 134, 226, 1) 32%, rgba(243, 150, 224, 1) 51%, rgba(228, 190, 219, 1) 99%);
@@ -126,4 +128,24 @@
 
 #cartdiv input[type='number']:valid {
     border: 1px solid green;
+}
+
+#orders p{
+    color: #d492c5;
+    font-size: 14px;
+}
+
+#paying{
+    background-color: #d492c5;
+    border: 5px solid #F39EB1;
+    border-radius: 20px;
+    box-shadow: 1px 1px 4px white;
+    margin: 50px auto;
+    width: 700px;
+    padding: 30px;
+    font-size: 24px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    color: white;
+
 }

@@ -1,12 +1,15 @@
 
 .productbox {
+    position: static;
     margin: 20px;
     float: left;
     background: #f4f4f4;
     border: 1px solid #ddd;
     text-align: center;
     padding: 10px;
-    width: 300px;
+    min-width: 200px;
+    width: auto;
+    max-width: 258px;
     height: auto;
 }
 .productbox button {
@@ -33,21 +36,31 @@
     background: #fff;
     padding: 10px;
     position: relative;
-    width: 280px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 .productbox .image span {
      position: absolute
  }
 
 .productbox .image img {
-    width: 280px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 
 
-.productbox .image .sale {
-    background: green;
+.productbox .image .action {
+    background-color: crimson;
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 3px 10px;
+    bottom: 10px;
+    right: 10px
+}
+
+.productbox .image .new {
+    background-color: dodgerblue;
     color: #fff;
     font-weight: bold;
     font-size: 15px;
@@ -57,7 +70,7 @@
 }
 
 .productbox .details{
-    width: 280px;
+    width: 180px;
     height: 100px;
     margin: 0 auto;
     font-size: 10px;

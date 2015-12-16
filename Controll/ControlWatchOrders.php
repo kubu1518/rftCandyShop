@@ -26,7 +26,7 @@ foreach($orders as $o){
     $status = $o["stat_megnev"];
 
 
-    echo "<div id=' $orderNum '><table>";
+    echo "<div id=' $orderNum ' class='watchorder'><table>";
     echo <<<Otable
             <tr>
                 <th>Rendelés szám</th>

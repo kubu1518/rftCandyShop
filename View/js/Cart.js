@@ -18,7 +18,9 @@ function deleteProduct(button) {
     })
 }
 function finalizeOrder() {
-    $("#workzone").load("../../rftCandyshop/Controll/ControlOrderFinalize.php")
+    $("#workzone").load("../../rftCandyshop/Controll/ControlOrderFinalize.php", function(){
+
+    })
 }
 
 function showPayChooser(array) {
@@ -28,8 +30,10 @@ function showPayChooser(array) {
         $("#workzone").html(data);
         $("#finorder").click(function(){
             finalizeOrder()
+        });
+        $("#backtoindex").click(function(){
+            window.location = "http://localhost/rftCandyShop/View/index.php"
         })
-
 
     })
 }
@@ -124,6 +128,10 @@ function showCart() {
             }else {
                 showOrderPage()
             }
+        });
+
+        $("#backtoindex").click(function(){
+            window.location = "http://localhost/rftCandyShop/View/index.php"
         })
     })
 }

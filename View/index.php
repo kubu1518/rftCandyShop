@@ -62,6 +62,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/rftCandyShop/Model/ListingUtilities.p
             <input type="button" id="search" value="Keresés"/>
         </div>
         <div id="alterablecontent">
+            <article>Ez egy édesség webshow. Bár ilyen színkompozícióval bármit el lehet adni.
+                     Gondolkoztunk azon, hogy felrakunk egy talicskát is. Utána rájöttünk, h ezt az oldalt
+                     csak mi hárman nézegetjük.
+            </article>
         </div>
     </div>
 </div>

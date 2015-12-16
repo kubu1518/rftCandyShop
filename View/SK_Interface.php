@@ -39,7 +39,7 @@ function editStatus($id, $nValue)
 {
     $user = new UserAsStorekeeper($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
 
-    echo "edit status id: " . $id . " , value: " . $nValue . "<br>";
+    //echo "edit status id: " . $id . " , value: " . $nValue . "<br>";
     $user->orderHandling($id, $nValue);
 
 

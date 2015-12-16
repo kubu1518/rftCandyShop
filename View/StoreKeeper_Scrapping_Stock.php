@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     },
                     success: function (response) {
                         console.log(response);
+                        //alert(response);
                         location.reload();
                     }
                 })
@@ -202,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                        <td><input type="number" id="darab_' . $counter . '"  min="0" max="' . $row[3] . '" class="mennyiseg" ';
 
                         if (date("Y-m-d h:i:s") >= date($row[4])) {
-                            echo 'value="' . $row[3] . '"';
+                            echo 'value="' . $row[3] . '" disabled ';
                         } else {
                             echo 'value="0"';
                         }

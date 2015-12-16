@@ -61,7 +61,7 @@ $conn = new ConnectionHandler();
                     sum(r.mennyiseg) AS Raktaron FROM raktar r
                       INNER JOIN szallitmanyok sz
                         ON r.szall_id=sz.szall_id
-                        AND r.stat_id = 1
+                        AND ( r.stat_id = 1 or r.stat_id = 3)
                           group BY r.termek_id", null);
 
 

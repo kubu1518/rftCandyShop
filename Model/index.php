@@ -217,12 +217,16 @@ echo "-------------------------<br>";
 
 //lekérem a szállítmányokat az azokhoz a termékekhez amelyekből rendelés történt az adott azonosítóval.
 
-// rendelés_id, szállitmány_id, termek_id, mennyiség raktáron, szükséges mennyiség , lejárati dátum
-$stmt2 = $conn->preparedQuery("SELECT rr.rend_szam ,r.szall_id ,r.termek_id ,r.mennyiseg as raktaron,rr.mennyiseg,sz.lejar_datum
-                                        FROM `raktar` r INNER JOIN rendeles_reszletei rr
-                                        ON r.termek_id=rr.termek_id AND r.stat_id <> 0 AND rr.rend_szam = ?
-                                        inner JOIN szallitmanyok sz ON r.szall_id=sz.szall_id
-                                        order by r.termek_id, sz.lejar_datum",array($orderNumber));
+// rendelés_id, szállitmány_id, termek_id, mennyiség raktáron, szükséges mennyiség , stat_id, lejárati dátum
+$stmt2 = $conn->preparedQuery(
+    "SELECT rr.rend_szam ,r.szall_id ,r.termek_id ,r.mennyiseg as raktaron,rr.mennyiseg,r.stat_id,sz.lejar_datum
+        FROM `raktar` r INNER JOIN rendeles_reszletei rr
+          ON r.termek_id=rr.termek_id
+          AND (r.stat_id = 1 or r.stat_id = 3)
+          AND rr.rend_szam = ?
+            inner JOIN szallitmanyok sz
+            ON r.szall_id=sz.szall_id
+              order by r.termek_id, sz.lejar_datum",array($orderNumber));
 
 //$raktaronDb = array();
 
@@ -234,7 +238,7 @@ $kellDb = array();
 
 while($row = $stmt2->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
 
-    echo $row[0]." ".$row[1]." ".$row[2]." ".$row[3]." ".$row[4]." ".$row[5]."<br>";
+    echo $row[0]." ".$row[1]." ".$row[2]." ".$row[3]." ".$row[4]." ".$row[5]." ".$row[6]."<br>";
 
     $termek_id = $row[2];
 
@@ -248,20 +252,26 @@ while($row = $stmt2->fetch(PDO::FETCH_NUM,PDO::FETCH_ORI_NEXT)){
         $raktaron = $row[3];
 
         //ha több kellene mint amennyi van az adott szállítmányban a termékből, vagy ugyanannyi
-        if( ( ($raktaron - $kellDb[$termek_id]) < 0) ){
+        if( ( ($raktaron - $kellDb[$termek_id]) < 0) || ($raktaron - $kellDb[$termek_id]) == 0 ) {
 
             $kellDb[$termek_id] = $kellDb[$termek_id] - $raktaron;
             $raktaron = 0;
 
             echo "update raktaron:".$raktaron." && ennyi kell meg: ".$kellDb[$termek_id]."<br>";
+
+            $conn->preparedDelete("raktar","termek_id=? and szall_id=? and mennyiseg=? and stat_id",
+                array($termek_id,$row[0],$row[3],$row[5]));
         }
-        //több van a szállítmányban mint amennyi kell vag ugyananni
+        //több van a szállítmányban mint amennyi kell
         else{
 
             $raktaron -= $kellDb[$termek_id];
             $kellDb[$termek_id] = 0;
 
             echo "update raktaron:".$raktaron ." ennyi kell meg: ".$kellDb[$termek_id]."<br>";
+
+            $conn->preparedUpdate("raktar","mennyiseg",array($raktaron),
+                "raktar","termek_id=? and szall_id=? and mennyiseg=? and stat_id",array($termek_id,$row[0],$row[3],$row[5]));
         }
 
     }

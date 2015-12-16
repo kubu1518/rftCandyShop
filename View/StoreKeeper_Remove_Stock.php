@@ -82,7 +82,7 @@ $message = "";
 
     <div class="container">
         <div align="center" width="200px" border="1px">
-            <p><u>Készlet ellenőrzése</u></p>
+            <p><u>Elszállításra váró készlet</u></p>
 
             <?php
 
@@ -93,7 +93,7 @@ $message = "";
                   r.mennyiseg,r.szall_id,r.stat_id,sz.beerk_datum,
                   (SELECT stat_nev from statusz WHERE stat_id=r.stat_id) as STAT_NEV
                     from raktar r INNER JOIN szallitmanyok sz ON
-                    r.szall_id=sz.szall_id AND (r.stat_id = 0 or r.stat_id = 2)"
+                    r.szall_id=sz.szall_id AND (r.stat_id = 0 or r.stat_id = 2 or r.stat_id = 5)"
                 , null);
 
             while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {

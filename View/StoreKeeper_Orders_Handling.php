@@ -72,7 +72,7 @@ $conn = new ConnectionHandler();
     <div class="container">
         <div align="center" width="200px" border="1px">
             <p><u>Rendelések</u></p>
-<table>
+<table class="szallitmanyok">
             <?php
 
             $stmt = $conn->preparedQuery(

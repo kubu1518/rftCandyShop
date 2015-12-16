@@ -98,3 +98,19 @@ input.long {
 input.mennyiseg {
     width: 50px;
 }
+
+table.szallitmanyok {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.szallitmanyok th, .szallitmanyok td{
+    border-bottom: 1px solid black;
+}
+
+
+th, td.szallitmanyok {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

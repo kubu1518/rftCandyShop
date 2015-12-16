@@ -61,7 +61,7 @@ class Registration
 
                 $this->ch->preparedInsert($this->table,$fields,$values);
                 $this->ch->close();
-                return "Sikeres Regisztráció";
+                return "ok";
             }
 
         } else {

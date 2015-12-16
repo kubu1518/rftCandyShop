@@ -90,6 +90,9 @@ function editHighlight($id, $nValue)
     echo "editHighlight: " . $id . " " . $nValue . ".<br>";
     $user = new UserAsLeader($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
     $user->productEditHighlighting($id, $nValue);
+    if($id == 1){
+        $user->productEditDiscount($id, 0);
+    }
 }
 
 function editDiscount($id, $nValue)

@@ -42,7 +42,7 @@ $conn = new ConnectionHandler();
                 var h = $('#highlight').val();
 
 if(h == 4){
-    alert("h is 4");
+  //  alert("h is 4");
 
     $('#action').prop('disabled',false);
     $('#action').attr("min","1");
@@ -51,7 +51,7 @@ if(h == 4){
 
 }
                 else{
-    alert("h is not 4");
+//    alert("h is not 4");
 
     $('#action').prop('disabled',true);
     $('#action').val("0");

@@ -116,6 +116,7 @@ $conn = new ConnectionHandler();
             checkDiscount(id, nValue);
             console.log(id + "-____-" + nValue);
 
+
             $.ajax({
                 url: 'Leader_Interface.php',
                 type: 'post',
@@ -276,24 +277,26 @@ $conn = new ConnectionHandler();
 
 
                             Ár: <input type="number" id="' . $id . '" value="' . $row[5] . '" name="recQ"
-                                class="inp" min="0" max="9999"
+                                class="mennyiseg" min="0" max="9999"
                                 required title="Adja meg a termékből tartandó ajánlott mennyiséget!" onchange="editPrice(this.id, this.value)">
                             Raktáron tartandó: <input type="number" id="' . $id . '" value="' . $row[6] . '" name="stock"
-                                class="inp" min="0" max="9999"
+                                class="mennyiseg" min="0" max="9999"
                                 required title="Adja meg a termékből miniumum rendelhető mennyiséget!" onchange="editStock(this.id, this.value)">
-                            Min Rendelhető mennyiség: <input type="number" id="' . $id . '" name="recQ" class="inp" min="0" max="9999" value="' . $row[7] . '"
+                            Min Rend. M: <input type="number" id="' . $id . '" name="recQ" class="mennyiseg" min="0" max="9999" value="' . $row[7] . '"
                                                         required title="Adja meg a termékből tartandó ajánlott mennyiséget!" onchange="editMin(this.id,this.value)">
                             Kiemelés: <select id="' . $id . '" onchange="editHightlight(this.id,this.options[this.selectedIndex].value)">';
                     foreach ($highlits as $key => $value) {
-                        if ($key == $row[8]) {
-                            echo '<option value="' . $key . '" selected>' . $value . '</option>';
-                        } else {
-                            echo '<option value="' . $key . '">' . $value . '</option>';
+                        if($key != 2) {
+                            if ($key == $row[8]) {
+                                echo '<option value="' . $key . '" selected>' . $value . '</option>';
+                            } else {
+                                echo '<option value="' . $key . '">' . $value . '</option>';
+                            }
                         }
                     }
 
                     echo '<input type="number" id="discount_' . $id . '" value="' . $row[9] . '" name="discount"
-                                class="inp" min="0" max="9999"
+                                class="mennyiseg" min="0" max="9999"
                                 required title="Adja meg a termék kedvezményét %-ban!" onchange="editDiscount(this.id, this.value)"';
 
 

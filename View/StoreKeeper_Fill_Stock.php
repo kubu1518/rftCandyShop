@@ -18,9 +18,9 @@ $message = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['submit']) && $_SESSION["right_level"] == 2) {
 
-        echo $_POST["product"];
-        echo $_POST["quantity"];
-        echo $_POST["date"];
+        //echo $_POST["product"];
+        //echo $_POST["quantity"];
+        //echo $_POST["date"];
 
         $user = new UserAsStorekeeper($_SESSION["id"], $_SESSION["email"], $_SESSION["password"]);
 
